@@ -6,6 +6,41 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model Item {
+  id              Int      @default(autoincrement()) @id
+  title           String   @db.VarChar(255)
+  price           Decimal
+  currentBid      Decimal
+  description     String
+  pictures        String    // CSV of URL strings, or a Picture table?
+  seller          User      @relation(fields: [sellerId], references: [id])
+  sellerId        Int
+  category        String
+  condition       String
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  expiresAt       DateTime? 
+}
+
+model User {
+  id              Int      @id @default(autoincrement())
+  username        String   @unique
+  password        String
+  items           Item[]
+  address         Address?  @relation(fields: [addressId], references: [id])
+  addressId       Int?      @unique
+}
+
+model Address {
+  id              Int      @id @default(autoincrement())
+  user            User?
+  userId          Int?
+  city            String
+  state           String
+  zip             Int
+  street          String
 }
