@@ -26,7 +26,9 @@ const SignUp = () => {
         method: 'POST',
         body: JSON.stringify(newUser)
     })
-    console.log(response)
+
+    const user = await response.json()
+    console.log(user)
   }
 
   return (
