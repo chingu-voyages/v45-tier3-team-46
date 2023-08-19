@@ -16,7 +16,7 @@ model Item {
   buyNowPrice     Decimal?        @db.Decimal(10,2)
   startingBid     Decimal         @db.Decimal(10,2)
   currentBid      Decimal         @db.Decimal(10,2)
-  description     String
+  description     String          @db.VarChar(1000)
   pictures        Picture[]       @relation("ItemPictures") 
   seller          User            @relation(fields: [sellerId], references: [id], name: "ItemsForSale")
   sellerId        Int
@@ -63,7 +63,7 @@ model UserAddress {
 model Picture {
   id              Int             @id @default(autoincrement())
   url             String
-  altTag          String                                                                 // delete pics if item deleted
+  altText         String                                                                 // delete pics if item deleted
   item            Item            @relation(fields: [itemId], references: [id], name: "ItemPictures", onDelete: Cascade)
   itemId          Int
 }
