@@ -41,10 +41,14 @@ model User {
   username        String          @unique
   password        String
   email           String          @unique
+  emailVerified   DateTime?
   itemsForSale    Item[]          @relation("ItemsForSale")
   itemsSold       Item[]          @relation("ItemsSold")
   itemsPurchased  Item[]          @relation("ItemsPurchased")  
   userAddresses   UserAddress[]
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
 }
 
 model Address {
@@ -76,4 +80,34 @@ model Picture {
   itemId          Int
 
   @@index([itemId])
+}
+
+// for NextAuth
+model Account {
+  id                 String  @id @default(cuid())
+  user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             Int
+  type               String
+  provider           String  @unique
+  providerAccountId  String  @unique
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  @@index([userId])
+}
+
+// for NextAuth
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  expires      DateTime
+
+  @@index([userId])
 }
