@@ -4,11 +4,11 @@ server component. Otherwise we would need to put 'use client' at the top of layo
 
 import { SessionProvider } from 'next-auth/react'
 
-export default function AuthProvider({ children }: {
-  children: React.ReactNode
+export default function AuthProvider({ children, session }: {
+  children: React.ReactNode, session: any
 }) {
   return (
-    <SessionProvider>
+    <SessionProvider session={session}>
       {children}
     </SessionProvider>
   )
