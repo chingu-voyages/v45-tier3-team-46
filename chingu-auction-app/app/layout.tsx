@@ -4,6 +4,7 @@ import { Inter } from 'next/font/google'
 import AuthProvider from '@/context/AuthProvider'
 import { getServerSession } from "next-auth"
 import { options } from './api/auth/[...nextauth]/options'
+import Nav from '../components/Nav'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,9 +22,10 @@ export default async function RootLayout({
   console.log(session)
 
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={inter.className}>
         <AuthProvider>
+          <Nav />
           {children}
         </AuthProvider>
       </body>
