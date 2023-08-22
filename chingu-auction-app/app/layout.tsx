@@ -19,13 +19,13 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(options)
-  console.log(session)
+  console.log(session.user.name, 'session log')
 
   return (
     <html lang='en'>
       <body className={inter.className}>
         <AuthProvider>
-          <Nav />
+          <Nav test={session.user.name} session={session}/>
           {children}
         </AuthProvider>
       </body>

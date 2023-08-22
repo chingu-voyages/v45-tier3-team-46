@@ -1,5 +1,6 @@
 "use client"
 import React, { useState } from 'react'
+import {signIn} from "next-auth/react"
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -61,6 +62,9 @@ const SignUp = () => {
         />
         <button type="submit" className="rounded shadow w-auto bg-blue-300 mb-5">
           Sign Up
+        </button>
+        <button onClick={() => signIn('google')} className="rounded shadow w-auto bg-blue-300 mb-5">
+            Sign up with Google
         </button>
       </form>
     </div>
