@@ -38,8 +38,9 @@ model Item {
 
 model User {
   id              Int             @id @default(autoincrement())
-  username        String          @unique
-  password        String
+  name            String?
+  username        String?          @unique
+  password        String?
   email           String          @unique
   emailVerified   DateTime?
   itemsForSale    Item[]          @relation("ItemsForSale")
@@ -88,8 +89,8 @@ model Account {
   user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId             Int
   type               String
-  provider           String  @unique
-  providerAccountId  String  @unique
+  provider           String  
+  providerAccountId  String   @map("provider_providerAccountId")
   refresh_token      String?  @db.Text
   access_token       String?  @db.Text
   expires_at         Int?
@@ -99,6 +100,7 @@ model Account {
   session_state      String?
 
   @@index([userId])
+  @@unique([provider, providerAccountId])
 }
 
 // for NextAuth
