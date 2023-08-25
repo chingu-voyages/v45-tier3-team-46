@@ -58,7 +58,7 @@ export const options: NextAuthOptions = {
       },
       async authorize(credentials) {
         try {
-          user = await prisma.user.findUnique({
+          const user = await prisma.user.findUnique({
             where: {
               username: credentials?.username,
             },
@@ -101,9 +101,8 @@ export const options: NextAuthOptions = {
   callbacks: {
     // temporary solution
     async jwt({ token, user }: any) {
-      
       if (user) {
-          console.log(user, 'test1')
+        console.log(user, 'test1')
         token.userId = user.id
         token.sessionToken = user.sessionToken
         token.username = user.username
@@ -124,6 +123,25 @@ export const options: NextAuthOptions = {
       console.log(token, 'test')
       return token
     },
+    // manually create Session db entry for OAuth
+    async signIn({ user, account }) {
+      try {
+        if (account?.type === 'oauth'){
+          const token = randomUUID()
+          await prisma.session.create({
+            data: {
+              userId: user.id,
+              expires: new Date(Date.now() + maxAge * 1000),
+              sessionToken: token,
+            }
+          })
+          user.sessionToken = token
+        }
+      } catch (error) {
+        console.log(error)
+      }
+      return true
+    },
     session: ({ session, token }) => ({
         ...session,
         user: {
@@ -132,8 +150,8 @@ export const options: NextAuthOptions = {
             username: token?.username
         },
     }),
-}
-//   pages: {
-//     signIn: '/login'
-//   }
+  },
+  pages: {
+    signIn: '/login'  // redirect to custom login page instead of default
+  }
 }
