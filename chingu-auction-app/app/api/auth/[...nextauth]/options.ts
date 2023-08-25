@@ -1,5 +1,6 @@
 import type { NextAuthOptions } from 'next-auth'
 import GoogleProvider from "next-auth/providers/google"
+import GitHubProvider from 'next-auth/providers/github'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { type Adapter } from "@auth/core/adapters"
@@ -12,35 +13,14 @@ const maxAge = 30 * 24 * 60 * 60
 
 export const options: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
-//   session: {
-//     strategy: 'jwt',
-//     user: {
-//         id: 'id',
-//         username: 'username',
-//         email: 'email',
-//     }
-//   },
-//   callbacks: {
-//     async jwt({ token, account, profile }) {
-//         // Persist the OAuth access_token and or the user id to the token right after signin
-//         if (account) {
-//           token.username = account.access_token
-//           token.id = profile.id
-//         }
-//         return token
-//       },
-//     async session({ session, token, user }) {
-//       // Send properties to the client, like an access_token and user id from a provider.
-//       session.user.name = token.username
-//       session.user.id = token.id
-      
-//       return session
-//     }
-//   },
   providers: [
     GoogleProvider({
       clientId: process.env.GOOGLE_ID as string,
       clientSecret: process.env.GOOGLE_SECRET as string,
+    }),
+    GitHubProvider({
+        clientId: process.env.GITHUB_ID as string,
+        clientSecret: process.env.GITHUB_SECRET as string
     }),
     CredentialsProvider({
       name: "Credentials",
@@ -124,7 +104,7 @@ export const options: NextAuthOptions = {
       return token
     },
     // manually create Session db entry for OAuth
-    async signIn({ user, account }) {
+    async signIn({ user, account, profile }) {
       try {
         if (account?.type === 'oauth'){
           const token = randomUUID()
@@ -135,6 +115,7 @@ export const options: NextAuthOptions = {
               sessionToken: token,
             }
           })
+          console.log(user)
           user.sessionToken = token
         }
       } catch (error) {

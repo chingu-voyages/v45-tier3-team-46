@@ -44,7 +44,13 @@ const SignUp = () => {
 
   const signUpWithOAuth = async (provider: string) => {
     // change callbackUrl to a "finish signup" page?
-    await signIn(provider, { callbackUrl: '/' })
+    try {
+        await signIn(provider, { callbackUrl: '/' })
+    } catch (error) {
+        // handle OAuthAccountNotLinked error with "You are already 
+        // logged in" notification?
+        console.log(error)
+    }
   }
 
   return (
@@ -78,8 +84,11 @@ const SignUp = () => {
         <button type="submit" className="rounded shadow w-auto bg-blue-300 mt-2 mb-2 p-1 font-medium">
           Sign Up
         </button>
-        <button type="button" onClick={() => signUpWithOAuth('google')} name="oauth" className="rounded shadow w-auto bg-blue-300 mb-5 p-1 font-medium">
+        <button type="button" onClick={() => signUpWithOAuth('google')} name="oauth" className="rounded shadow w-auto bg-blue-300 mb-2 p-1 font-medium">
           Sign up with Google
+        </button>
+        <button type="button" onClick={() => signUpWithOAuth('github')} name="oauth" className="rounded shadow w-auto bg-blue-300 mb-2 p-1 font-medium">
+          Sign up with Github
         </button>
       </form>
     </div>

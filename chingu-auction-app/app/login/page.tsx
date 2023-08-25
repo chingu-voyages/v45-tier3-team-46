@@ -24,7 +24,13 @@ const Login = () => {
   }
 
   const loginWithOAuth = async (provider: string) => {
-    await signIn(provider, { callbackUrl: '/' })
+    try {
+      await signIn(provider, { callbackUrl: '/' })
+    } catch (error) {
+        // handle OAuthAccountNotLinked error with "You are already 
+        // logged in" notification?
+        console.log(error)
+    }
   }
 
   return (
@@ -50,8 +56,11 @@ const Login = () => {
         <button type="submit" className="rounded shadow w-auto bg-blue-300 mt-2 mb-2 p-1 font-medium">
           Login
         </button>
-        <button type="button" onClick={() => loginWithOAuth('google')} className="rounded shadow w-auto bg-blue-300 mb-5 p-1 font-medium">
+        <button type="button" onClick={() => loginWithOAuth('google')} className="rounded shadow w-auto bg-blue-300 mb-2 p-1 font-medium">
             Login with Google
+        </button>
+        <button type="button" onClick={() => loginWithOAuth('github')} className="rounded shadow w-auto bg-blue-300 mb-2 p-1 font-medium">
+            Login with Github
         </button>
       </form>
     </div>
