@@ -4,64 +4,6 @@ import { NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-// export async function POST(req: Request) {
-//   const data = await req.json()
-//   console.log(data, '1')
-//   const {
-//     title,
-//     buyNowPrice,
-//     startingBid,
-//     currentBid,
-//     description,
-//     pictures,
-//     seller,
-//     soldBy,
-//     purchasedBy,
-//     category,
-//     condition,
-//     createdAt,
-//     updatedAt,
-//     expiresAt,
-//   } = data
-
-//   try {
-//     const newEntry = await prisma.item.create({
-//       data: {
-//         title,
-//         buyNowPrice: 12,
-//         startingBid,
-//         currentBid: 12,
-//         description,
-//         pictures:  {
-//           create: [
-//             {
-//               url: 'https://example.com/picture1.jpg',
-//               altText: 'Picture 1',
-//             },
-//             {
-//               url: 'https://example.com/picture2.jpg',
-//               altText: 'Picture 2',
-//             },
-//           ],
-//         },
-//         sellerId: 1,
-//         soldById: 1,
-//         purchasedById: 2,
-//         category,
-//         condition,
-//         createdAt: new Date().toISOString(),
-//         updatedAt: new Date().toISOString(),
-//         expiresAt: new Date().toISOString(),
-//       },
-//     })
-//     return NextResponse.json(newEntry, {status: 200 })
-//   } catch (error) {
-//     console.error('Request error', error)
-//     NextResponse
-//       .json({ error: 'Error adding auction item', status: 500 })
-//   }
-// }
-
 export async function handler(
   req: Request
 ) {
@@ -76,7 +18,7 @@ export async function handler(
   }
 
   async function postItem(req: any) {
-    //console.log(req.body, '2')
+    
     const {
       title,
       buyNowPrice,
@@ -84,15 +26,15 @@ export async function handler(
       currentBid,
       description,
       pictures,
-      seller,
-      soldBy,
-      purchasedBy,
+      sellerId,
       category,
       condition,
-      createdAt,
-      updatedAt,
       expiresAt,
     } = await req.json()
+    
+    const currentDate = Date.now()
+    const endDate = new Date(currentDate + expiresAt)
+    console.log(endDate)
 
     try {
       const newEntry = await prisma.item.create({
@@ -103,25 +45,16 @@ export async function handler(
           currentBid: 12,
           description,
           pictures:  {
-            create: [
-              {
-                url: 'http://example.com/pic1.jpg',
-                altText: 'Test pic',
-              },
-              {
-                url: 'http://example.com/pic2.jpg',
-                altText: 'Picture 2',
-              },
-            ],
+            create: pictures.map((pic) => ({ url: pic }))   // add altText later 
           },
-          sellerId: 2,
-          soldById: 2,
-          purchasedById: 3,
-          category,
+          seller: {
+            connect: { 
+              id: sellerId 
+            }
+          },
+          category: "Electronics",
           condition,
-          createdAt: new Date().toISOString(),
-          updatedAt: new Date().toISOString(),
-          expiresAt: new Date().toISOString(),
+          expiresAt: endDate,
         },
       })
       return NextResponse.json(newEntry, {status: 200 })
