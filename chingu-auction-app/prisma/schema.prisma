@@ -20,11 +20,10 @@ model Item {
   description     String          @db.VarChar(1000)
   pictures        Picture[]       @relation("ItemPictures") 
   seller          User            @relation(fields: [sellerId], references: [id], name: "ItemsForSale")
-  sellerId        Int             
-  soldBy          User            @relation(fields: [soldById], references: [id], name: "ItemsSold")
-  soldById        Int
-  purchasedBy     User            @relation(fields: [purchasedById], references: [id], name: "ItemsPurchased")
-  purchasedById   Int
+  sellerId        Int
+  sold            Boolean         @default(false)    
+  purchasedBy     User?           @relation(fields: [purchasedById], references: [id], name: "ItemsPurchased")
+  purchasedById   Int?
   category        String
   condition       String
   createdAt       DateTime        @default(now())
@@ -32,7 +31,6 @@ model Item {
   expiresAt       DateTime? 
 
   @@index([sellerId])
-  @@index([soldById])
   @@index([purchasedById])
 }
 
@@ -44,7 +42,7 @@ model User {
   email           String          @unique
   emailVerified   DateTime?
   itemsForSale    Item[]          @relation("ItemsForSale")
-  itemsSold       Item[]          @relation("ItemsSold")
+  // itemsSold     query itemsForSale where sold: true  
   itemsPurchased  Item[]          @relation("ItemsPurchased")  
   userAddresses   UserAddress[]
   image           String?
@@ -76,7 +74,7 @@ model UserAddress {
 model Picture {
   id              Int             @id @default(autoincrement())
   url             String
-  altText         String                                                                 // delete pics if item deleted
+  altText         String?                                                                 // delete pics if item deleted
   item            Item            @relation(fields: [itemId], references: [id], name: "ItemPictures", onDelete: Cascade)
   itemId          Int
 
@@ -85,8 +83,8 @@ model Picture {
 
 // for NextAuth
 model Account {
-  id                 String  @id @default(cuid())
-  user               User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id                 String   @id @default(cuid())
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId             Int
   type               String
   provider           String  
