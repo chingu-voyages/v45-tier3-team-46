@@ -40,9 +40,9 @@ export async function handler(
       const newEntry = await prisma.item.create({
         data: {
           title,
-          buyNowPrice: 12,
+          buyNowPrice: 0,
           startingBid,
-          currentBid: 12,
+          currentBid: startingBid,
           description,
           pictures:  {
             create: pictures.map((pic) => ({ url: pic }))   // add altText later 
@@ -52,7 +52,7 @@ export async function handler(
               id: sellerId 
             }
           },
-          category: "Electronics",
+          category,
           condition,
           expiresAt: endDate,
         },

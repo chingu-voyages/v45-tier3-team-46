@@ -8,7 +8,7 @@ const itemCondition = ['New', 'Open box', 'Used', 'As Is']
 
 const AddAuction = (props) => {
   const { data: session } = useSession()
-  console.log(session.user.id)
+  console.log(session?.user?.id)
 
   const [submitting, setSubmitting] = useState(false)
   const [itemData, setItemData] = useState({
