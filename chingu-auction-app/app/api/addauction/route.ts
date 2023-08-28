@@ -1,39 +1,35 @@
 import { PrismaClient } from '@prisma/client'
 import type { NextApiRequest, NextApiResponse } from 'next'
+import { NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export async function handler(req: Request) {
   if (req.method === 'POST') {
-    return await postItem(req, res)
+    console.log(req.body, '1')
+    return await postItem(req)
   } else if (req.method === 'GET') {
-    return await getPostedItems(req, res)
+    return await getPostedItems(req)
   } else {
-    return res
-      .status(405)
-      .json({ message: 'Method not allowed', success: false })
+    return NextResponse.json({ message: 'Method not allowed', status: 405 })
   }
 
-  async function postItem(req, res) {
+  async function postItem(req: any) {
     const {
       title,
       buyNowPrice,
       startingBid,
-      currentBid,
       description,
       pictures,
-      seller,
-      soldBy,
-      purchasedBy,
+      sellerId,
       category,
       condition,
-      createdAt,
-      updatedAt,
       expiresAt,
-    } = req.body
+    } = await req.json()
+
+    const currentDate = Date.now()
+    const endDate = new Date(currentDate + expiresAt)
+    console.log(endDate)
 
     try {
       const newEntry = await prisma.item.create({
@@ -41,37 +37,39 @@ export default async function handler(
           title,
           buyNowPrice,
           startingBid,
-          currentBid,
           description,
-          pictures,
-          seller,
-          soldBy,
-          purchasedBy,
+          pictures: {
+            create: pictures.map((pic) => ({ url: pic })), // add altText later
+          },
+          seller: {
+            connect: {
+              id: sellerId,
+            },
+          },
           category,
           condition,
-          createdAt,
-          updatedAt,
-          expiresAt,
+          expiresAt: endDate,
         },
       })
-      return res.status(200).json(newEntry, { success: true })
+      return NextResponse.json(newEntry, { status: 200 })
     } catch (error) {
       console.error('Request error', error)
-      res
-        .status(500)
-        .json({ error: 'Error adding auction item', success: false })
+      NextResponse.json({ error: 'Error adding auction item', status: 500 })
     }
   }
 
-  async function getPostedItems(req, res) {
+  async function getPostedItems(req) {
     try {
       const item = await prisma.item.findMany()
-      return res.status(200).json(item, { success: true })
+      return NextResponse.json(item, { status: 200 })
     } catch (error) {
       console.log(error)
-      return res
-        .status(500)
-        .json({ error: 'Error reading from database', success: false })
+      return NextResponse.json({
+        error: 'Error reading from database',
+        status: 500,
+      })
     }
   }
 }
+
+export { handler as GET, handler as POST }
