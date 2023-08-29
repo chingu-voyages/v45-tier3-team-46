@@ -35,8 +35,9 @@ export async function handler(req: Request) {
       const newEntry = await prisma.item.create({
         data: {
           title,
-          buyNowPrice: 0,
+          buyNowPrice,
           startingBid,
+          currentBid: startingBid,
           description,
           pictures: {
             create: pictures.map((pic) => ({ url: pic })), // add altText later
