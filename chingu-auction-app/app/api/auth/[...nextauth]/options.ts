@@ -82,7 +82,7 @@ export const options: NextAuthOptions = {
     // temporary solution
     async jwt({ token, user }: any) {
       if (user) {
-        console.log(user, 'test1')
+        // add user properties to token that are needed in the session callback
         token.userId = user.id
         token.sessionToken = user.sessionToken
         token.username = user.username

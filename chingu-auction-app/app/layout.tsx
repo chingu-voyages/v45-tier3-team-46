@@ -19,15 +19,15 @@ export default async function RootLayout({
   children: React.ReactNode
 }) {
   const session = await getServerSession(options)
-  const displayName = session?.user?.name ? session?.user?.name.split(' ')[0]
-                                          : session?.user?.username
   console.log(session?.user, 'session log')
+  // const displayName = session?.user?.name ? session?.user?.name.split(' ')[0]
+  //                                         : session?.user?.username
 
   return (
     <html lang='en'>
       <body className={inter.className}>
         <AuthProvider>
-          <Nav test={displayName} session={session}/>
+          <Nav session={session}/>
           {children}
         </AuthProvider>
       </body>
