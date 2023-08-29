@@ -121,28 +121,28 @@ const AuctionForm = ({
                 />
               </div>
             </div>
-            {/* <div>
+            <div>
               <label
-                htmlFor='starting-bid'
+                htmlFor='buy-now-price'
                 className='block text-sm font-semibold leading-6 text-gray-900'
               >
-                Starting Time
+                Buy Now Price
               </label>
               <div className='mt-2.5'>
                 <input
                   onChange={(e) =>
-                    setItemData({ ...itemData, createdAt: e.target.value })
+                    setItemData({ ...itemData, buyNowPrice: e.target.value })
                   }
-                  value={itemData.createdAt}
+                  value={itemData.buyNowPrice}
                   type='text'
-                  name='starting-bid'
-                  id='starting-bid'
-                  placeholder='00:00:00'
+                  name='buy-now-price'
+                  id='buy-now-price'
+                  placeholder='$'
                   required
                   className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 />
               </div>
-            </div> */}
+            </div>
             <div>
               <label
                 htmlFor='end-date'
@@ -184,13 +184,18 @@ const AuctionForm = ({
                   required
                   className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 >
-                  <option value='' disabled>Select a category</option>
+                  <option value='' disabled>
+                    Select a category
+                  </option>
                   <option value='Electronics'>Electronics</option>
                   <option value='Clothing'>Clothing</option>
                   <option value='Shoes'>Shoes</option>
                   <option value='Video Games'>Video Games</option>
                   <option value='Computer Hardware'>Computer Hardware</option>
                   <option value='Automotive'>Automotive</option>
+                  <option value='Home'>Home</option>
+                  <option value='Office'>Office</option>
+                  <option value='Misc Used Goods'>Misc Used Goods</option>
                 </select>
               </div>
             </div>
@@ -221,7 +226,7 @@ const AuctionForm = ({
               type='submit'
               className='block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600'
             >
-              List Item
+              {submitting ? `${type}...` : type}
             </button>
           </div>
         </form>

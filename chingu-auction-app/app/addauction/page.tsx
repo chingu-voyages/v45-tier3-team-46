@@ -4,8 +4,6 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import AuctionForm from '../../components/AuctionForm'
 
-const itemCondition = ['New', 'Open box', 'Used', 'As Is']
-
 const AddAuction = (props) => {
   const { data: session } = useSession()
   console.log(session?.user?.id)
@@ -23,10 +21,21 @@ const AddAuction = (props) => {
     purchasedById: '',
     category: '',
     condition: '',
-    createdAt: '',
-    updatedAt: '',
     expiresAt: '',
   })
+
+  const resetForm = () => {
+    setItemData({
+      title: '',
+      condition: '',
+      description: '',
+      startingBid: '',
+      buyNowPrice: '',
+      expiresAt: '',
+      category: '',
+      pictures: '',
+    })
+  }
 
   const listAuctionItem = async (e: any) => {
     e.preventDefault()
@@ -62,12 +71,13 @@ const AddAuction = (props) => {
       console.log('There was an error listing the item', error)
     } finally {
       setSubmitting(false)
+      resetForm()
     }
   }
 
   return (
     <AuctionForm
-      type='Add'
+      type='Add Item'
       itemData={itemData}
       setItemData={setItemData}
       handleSubmit={listAuctionItem}
