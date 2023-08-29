@@ -70,11 +70,16 @@ const AuctionForm = ({
                   required
                   className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
                 >
+                  <option value='' disabled>
+                    Select condition
+                  </option>
                   <option value='New'>New</option>
                   <option value='Like New'>Like New</option>
                   <option value='Very Good'>Very Good</option>
                   <option value='Good'>Good</option>
                   <option value='Poor'>Poor</option>
+                  <option value='Used'>Used</option>
+                  <option value='As Is'>As Is</option>
                 </select>
               </div>
             </div>
@@ -195,6 +200,7 @@ const AuctionForm = ({
                   <option value='Automotive'>Automotive</option>
                   <option value='Home'>Home</option>
                   <option value='Office'>Office</option>
+                  <option value='Food'>Food</option>
                   <option value='Misc Used Goods'>Misc Used Goods</option>
                 </select>
               </div>
