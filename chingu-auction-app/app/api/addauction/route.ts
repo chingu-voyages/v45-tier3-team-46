@@ -35,7 +35,7 @@ export async function handler(req: Request) {
       const newEntry = await prisma.item.create({
         data: {
           title,
-          buyNowPrice,
+          buyNowPrice: 0,
           startingBid,
           description,
           pictures: {

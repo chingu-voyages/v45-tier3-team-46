@@ -1,7 +1,13 @@
+'use client'
+// I'm thinking we can avoid making this a client component by separating out
+// the dropdowns into their own client components later
 import Logo from '../public/assets/images/chingu_logo.png'
+import Avatar from '../public/assets/images/blank-avatar.png'
 import Image from 'next/image'
+import {signOut} from "next-auth/react"
 
-const Nav = () => {
+const Nav = (props) => {
+  console.log(props.session, 'nav session log')
   return (
     <div>
       <header>
@@ -19,18 +25,31 @@ const Nav = () => {
               </span>
             </a>
             <div className='flex items-center lg:order-2'>
-              <a
-                href='/login'
-                className='text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800'
-              >
-                Log in
-              </a>
-              <a
-                href='/signup'
-                className='text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
-              >
-                Sign up
-              </a>
+              {props.session ? (
+                <div className=''>
+                  <Image
+                    src={Avatar} 
+                    className='mr-1 lg:mr-0 cursor-pointer rounded-full object-cover h-10 w-10'
+                    alt='Click to manage account info or logout'
+                    onClick={signOut}
+                  />
+                </div>
+              ) : ( 
+              <>
+                <a
+                  href='/login'
+                  className='text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800'
+                >
+                  Log in
+                </a>
+                <a
+                  href='/signup'
+                  className='text-white bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:bg-primary-600 dark:hover:bg-primary-700 focus:outline-none dark:focus:ring-primary-800'
+                >
+                  Sign up
+                </a>
+              </>
+              )}
               <button
                 data-collapse-toggle='mobile-menu-2'
                 type='button'

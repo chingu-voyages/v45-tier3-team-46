@@ -16,15 +16,14 @@ model Item {
   title           String          @db.VarChar(255)
   buyNowPrice     Decimal?        @db.Decimal(10,2)
   startingBid     Decimal         @db.Decimal(10,2)
-  currentBid      Decimal         @db.Decimal(10,2)
+  currentBid      Decimal?         @db.Decimal(10,2)
   description     String          @db.VarChar(1000)
   pictures        Picture[]       @relation("ItemPictures") 
   seller          User            @relation(fields: [sellerId], references: [id], name: "ItemsForSale")
-  sellerId        Int             
-  soldBy          User            @relation(fields: [soldById], references: [id], name: "ItemsSold")
-  soldById        Int
-  purchasedBy     User            @relation(fields: [purchasedById], references: [id], name: "ItemsPurchased")
-  purchasedById   Int
+  sellerId        Int
+  sold            Boolean         @default(false)    
+  purchasedBy     User?           @relation(fields: [purchasedById], references: [id], name: "ItemsPurchased")
+  purchasedById   Int?
   category        String
   condition       String
   createdAt       DateTime        @default(now())
@@ -32,19 +31,23 @@ model Item {
   expiresAt       DateTime? 
 
   @@index([sellerId])
-  @@index([soldById])
   @@index([purchasedById])
 }
 
 model User {
   id              Int             @id @default(autoincrement())
-  username        String          @unique
-  password        String
+  name            String?
+  username        String?          @unique
+  password        String?
   email           String          @unique
+  emailVerified   DateTime?
   itemsForSale    Item[]          @relation("ItemsForSale")
-  itemsSold       Item[]          @relation("ItemsSold")
+  // itemsSold     query itemsForSale where sold: true  
   itemsPurchased  Item[]          @relation("ItemsPurchased")  
   userAddresses   UserAddress[]
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
 }
 
 model Address {
@@ -71,9 +74,40 @@ model UserAddress {
 model Picture {
   id              Int             @id @default(autoincrement())
   url             String
-  altText         String                                                                 // delete pics if item deleted
+  altText         String?                                                                 // delete pics if item deleted
   item            Item            @relation(fields: [itemId], references: [id], name: "ItemPictures", onDelete: Cascade)
   itemId          Int
 
   @@index([itemId])
+}
+
+// for NextAuth
+model Account {
+  id                 String   @id @default(cuid())
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId             Int
+  type               String
+  provider           String  
+  providerAccountId  String   @map("provider_providerAccountId")
+  refresh_token      String?  @db.Text
+  access_token       String?  @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String?  @db.Text
+  session_state      String?
+
+  @@index([userId])
+  @@unique([provider, providerAccountId])
+}
+
+// for NextAuth
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       Int
+  expires      DateTime
+
+  @@index([userId])
 }
