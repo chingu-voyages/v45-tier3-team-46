@@ -16,7 +16,7 @@ model Item {
   title           String          @db.VarChar(255)
   buyNowPrice     Decimal?        @db.Decimal(10,2)
   startingBid     Decimal         @db.Decimal(10,2)
-  currentBid      Decimal         @db.Decimal(10,2)
+  currentBid      Decimal?         @db.Decimal(10,2)
   description     String          @db.VarChar(1000)
   pictures        Picture[]       @relation("ItemPictures") 
   seller          User            @relation(fields: [sellerId], references: [id], name: "ItemsForSale")
