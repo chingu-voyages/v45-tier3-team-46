@@ -44,7 +44,8 @@ model User {
   itemsForSale    Item[]          @relation("ItemsForSale")
   // itemsSold     query itemsForSale where sold: true  
   itemsPurchased  Item[]          @relation("ItemsPurchased")  
-  userAddresses   UserAddress[]
+  // userAddresses   UserAddress[]
+  addresses       Address[]
   image           String?
   accounts        Account[]
   sessions        Session[]
@@ -52,24 +53,27 @@ model User {
 
 model Address {
   id              Int             @id @default(autoincrement())
+  street1         String
+  street2         String
   city            String
   state           String
   zip             Int
-  street          String
-  userAddresses   UserAddress[]
-}
-
-model UserAddress {
-  id              Int             @id @default(autoincrement())                 // delete addresses if user deleted
-  user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId          Int
-  address         Address         @relation(fields: [addressId], references: [id])
-  addressId       Int
   addressType     String          // billing or shipping
-
-  @@index([userId])
-  @@index([addressId])
+  users           User[]
+  // userAddresses   UserAddress[]
 }
+
+// model UserAddress {
+//   id              Int             @id @default(autoincrement())                 // delete addresses if user deleted
+//   user            User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+//   userId          Int
+//   address         Address         @relation(fields: [addressId], references: [id])
+//   addressId       Int
+//   addressType     String          // billing or shipping
+
+//   @@index([userId])
+//   @@index([addressId])
+// }
 
 model Picture {
   id              Int             @id @default(autoincrement())
