@@ -54,7 +54,7 @@ model User {
 model Address {
   id              Int             @id @default(autoincrement())
   street1         String
-  street2         String
+  street2         String?
   city            String
   state           String
   zip             Int
