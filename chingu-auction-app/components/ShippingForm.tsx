@@ -30,7 +30,7 @@ const ShippingForm = ({ addressType }) => {
     event.preventDefault()
     console.log(formData)
     try {
-        const response = await fetch(`/api/shipping`, {
+        const response = await fetch(`/api/user/${userId}/shipping`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
