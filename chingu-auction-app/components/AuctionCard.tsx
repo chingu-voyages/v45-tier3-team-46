@@ -1,4 +1,14 @@
-export function AuctionCard(props) {
+interface Props {
+  itemName: string,
+  sellerName: string,
+  itemCondition: string,
+  currentBid: number,
+  amountBids: number,
+  buyPrice: number,
+  timeLeft: string
+}
+
+export function AuctionCard(props: any) {
 
   return (
     <>
