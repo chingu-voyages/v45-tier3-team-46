@@ -1,4 +1,5 @@
-import { Card, CardHeader, CardBody, CardFooter, Image } from "@nextui-org/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Image } from "@nextui-org/image";
 interface Props {
   itemName: string,
   sellerName: string,
