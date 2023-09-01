@@ -6,8 +6,7 @@ import { Input, Button } from "@nextui-org/react"
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 
-const ShippingForm = ({ addressType }) => {
-  const [addresses, setAddresses] = useState([])
+const ShippingForm = () => {
   const [formData, setFormData] = useState({
     street1: '',
     street2: '',
@@ -21,11 +20,7 @@ const ShippingForm = ({ addressType }) => {
   const search = searchParams.get('type')
 
   const {userId} = useParams()
-  console.log(userId, search)
-
-  const addAddress = () => {
-      setAddresses([...addresses, {}])
-  }
+  //console.log(userId, search)
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value }: { name: string, value: string } = event.target
@@ -46,7 +41,7 @@ const ShippingForm = ({ addressType }) => {
             city: formData.city,
             state: formData.state,
             zip: Number(formData.zip),
-            addressType: addressType,
+            addressType: search,
             userId: Number(userId)
           })
         })
@@ -63,7 +58,7 @@ const ShippingForm = ({ addressType }) => {
       <form className="grid grid-cols-2 gap-4 max-w-xl mx-auto" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="street1" className="block text-sm font-medium text-gray-700">Street 1</label>
-          <Input type="text" id="street1" name="street1" value={formData.street1} onChange={console.log('test')} className="mt-1" />
+          <Input type="text" id="street1" name="street1" value={formData.street1} onChange={handleChange} className="mt-1" />
         </div>
         <div>
           <label htmlFor="street2" className="block text-sm font-medium text-gray-700">Street 2</label>
