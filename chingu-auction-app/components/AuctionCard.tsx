@@ -64,9 +64,10 @@ export function AuctionCard(props: any) {
           </div>
         </CardBody>
         <CardFooter className="pt-3">
-          <Button size="lg" fullWidth={true}>
-            Reserve
+          <Button className="mb-2" size="lg" fullWidth={true}>
+            Bid
           </Button>
+          <Button size="lg" fullWidth={true}>Buy</Button>
         </CardFooter>
       </Card>
     </>
