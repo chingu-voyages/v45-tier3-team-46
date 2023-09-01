@@ -1,21 +1,25 @@
 import React from 'react'
-import ShippingForm from '@/components/ShippingForm'
+import Addresses from '@/components/Addresses'
 import Link from 'next/link'
+import getAddresses from './getAddresses'
 
-const Shipping = () => {
+const Shipping = async () => {
+  const shippingAddresses = await getAddresses('Shipping')
+  const billingAddresses = await getAddresses('Billing')
+  console.log('page.tsx addresses', shippingAddresses, billingAddresses)
 
   return (
-    <div>
+    <div className='m-2'>
       <h1 className="text-xl font-semibold mb-4">Edit Shipping and Billing Details</h1>
       <div>
-        <Link href={`./shipping/addaddress`} as="./shipping/addaddress?type=Shipping">
-          <h2 className="text-xl font-semibold mb-4">Add a Shipping Address</h2>
-        </Link>
+        <h2 className="text-xl font-semibold mb-4">Shipping Addresses</h2>
+        <Addresses addresses={shippingAddresses} type={'Shipping'}/>
       </div>
       <div>
         <Link href={`./shipping/addaddress`} as="./shipping/addaddress?type=Billing">
-          <h2 className="text-xl font-semibold mb-4">Add a Billing Address</h2>
+          <h2 className="text-xl font-semibold mb-4">Billing Addresses</h2>
         </Link>
+        <Addresses addresses={billingAddresses} type={'Billing'}/>
       </div>
     </div>
   )
