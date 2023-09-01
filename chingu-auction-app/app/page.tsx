@@ -1,6 +1,8 @@
 import { AuctionCard } from '../components/AuctionCard'
 import Link from 'next/link'
 
+
+
 const sampleAuctions = [
   {
     id: 1,
@@ -54,7 +56,7 @@ export default function Home() {
             All Auctions
           </button>
         </div>
-        <div className='flex flex-wrap justify-around'>
+        <div className='flex flex-wrap gap-3'>
           {sampleAuctions.map((auction) => (
             <AuctionCard
               key={auction.id}
