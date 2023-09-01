@@ -1,10 +1,6 @@
 import { PrismaClient } from "@prisma/client"
 import { NextResponse } from "next/server"
-import { options } from '../../../auth/[...nextauth]/options'
-import { getServerSession } from "next-auth/next"
-import { cookies } from 'next/headers'
-
-const prisma = new PrismaClient();
+import prisma from "@/lib/prisma"
 
 export async function POST(req: Request) {
   const {     
