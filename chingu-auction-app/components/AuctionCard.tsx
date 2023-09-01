@@ -1,3 +1,16 @@
+'use client'
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Typography,
+  Button,
+  Tooltip,
+  IconButton
+} from "@material-tailwind/react";
+
+
 interface Props {
   itemName: string,
   sellerName: string,
@@ -12,29 +25,50 @@ export function AuctionCard(props: any) {
 
   return (
     <>
-      <div id="mini-auction-card" className="w-96 bg-red-50 ring-2 ring-offset-4 ring-black ring-offset-blue-100 rounded-md">
-        <figure className="h-96 border-black border-2 rounded-t-md p-1">
-          <img alt="sample_text" />
-        </figure>
-        <div id="card-text-section">
-          <div id="card-heading-section " className="border-black border-l-2 border-r-2 p-1">
-            <span className="flex flex-row justify-between text-xl">
-              <h2> {props.itemName}</h2>
-              <h3> {props.sellerName}</h3>
-            </span>
-            <h3> Condition: {props.itemCondition}</h3>
-          </div>
-          <div id="card-detail-section" className="border-black border-2 rounded-b-md  p-1">
+      <Card className="w-full max-w-[20rem] shadow-lg border-2 border-black">
+        <CardHeader floated={false} color="blue-gray">
+          <img
+            src="https://images.unsplash.com/photo-1499696010180-025ef6e1a8f9?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80"
+            alt="ui/ux review check"
+          />
 
-            <span className="flex flex-row justify-between text-lg">
-              <h4> Current Bid: {props.currentBid}</h4>
-              <h4> Bids: {props.amountBids}</h4>
-            </span>
-            <h4> Buy It Now: {props.buyPrice}</h4>
-            <h4> Time Remaining: <span className="text-red-500">{props.timeLeft}</span></h4>
+        </CardHeader>
+        <CardBody>
+          <div className="mb-3 flex items-center justify-between">
+            <Typography variant="h5" color="blue-gray" className="font-medium">
+              {props.itemName}
+            </Typography>
+            <Typography
+              color="blue-gray"
+              className="flex items-center gap-1.5 font-normal"
+            >
+              {props.itemCondition}
+            </Typography>
           </div>
-        </div>
-      </div>
+          <div className="mb-2 flex items-center justify-between">
+            <Typography color="blue-gray" className="font-medium">
+              Current Bid {props.currentBid}
+            </Typography>
+            <Typography color="blue-gray" className="font-medium">
+              Bids {props.amountBids}
+            </Typography>
+          </div>
+
+          <div className="mb-2 flex items-center justify-between">
+            <Typography color="blue-gray" className="font-medium">
+              Buy {props.buyPrice}
+            </Typography>
+            <Typography color="blue-gray" className="font-medium">
+              {props.timeLeft}
+            </Typography>
+          </div>
+        </CardBody>
+        <CardFooter className="pt-3">
+          <Button size="lg" fullWidth={true}>
+            Reserve
+          </Button>
+        </CardFooter>
+      </Card>
     </>
   )
 }
