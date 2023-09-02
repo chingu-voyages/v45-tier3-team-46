@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import { getServerSession } from "next-auth"
+import { options } from '../../../auth/[...nextauth]/options'
 
 export async function POST(req: Request) {
   const {     
@@ -11,6 +13,13 @@ export async function POST(req: Request) {
     addressType,
     userId
   } = await req.json()
+
+  const session = await getServerSession(options)
+  const { user } = session
+  console.log('get addresses', user)
+
+  if (user.id !== userId)
+    return
 
   try {
     const newAddress = await prisma.address.create({
@@ -36,23 +45,16 @@ export async function POST(req: Request) {
   }
 }
 
-// export async function GET(req: Request) {
-//   // const cookieStore = cookies()
-//   // const cookieToDecode = cookieStore.get('userCookie')
-//   // console.log(cookieToDecode)
-//   const session = await getServerSession(options)
-//   // const { user } = session
-//   console.log('get addresses', session)
-//   const userBillingAddresses = await prisma.user.findUnique({
-//     where: { id: 11 },
-//     select: {
-//       addresses: {
-//         where: {
-//           addressType: "Billing"
-//         }
-//       }
-//     }
-//   })
-//   console.log(' addresses', userBillingAddresses)
-//   return NextResponse.json(userBillingAddresses)
-// }
+export async function GET(req: Request) {
+  const session = await getServerSession(options)
+  const { user } = session
+  console.log('get addresses', session)
+  
+  const userAddresses = await prisma.user.findUnique({
+    where: { id: user.id },
+    include: { addresses: true }
+  })
+
+  console.log('user addresses', userAddresses)
+  return NextResponse.json(userAddresses?.addresses)
+}

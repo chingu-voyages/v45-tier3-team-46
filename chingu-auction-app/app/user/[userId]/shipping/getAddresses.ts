@@ -4,7 +4,7 @@ import prisma from '@/lib/prisma'
 
 const getAddresses = async (addressType: string) => {
   const session = await getServerSession(options)
-  console.log(session?.user?.id, 'shp')
+//   console.log(session?.user?.id, 'shp')
   const userId = session?.user?.id
 
   try {

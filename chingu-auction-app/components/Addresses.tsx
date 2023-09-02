@@ -19,7 +19,10 @@ const Addresses = ({addresses, type}) => {
         <p>{address.street2}</p>
         <p>{address.city}, {address.state} {address.zip}</p>
       </CardBody>
-    </Card>  
+    </Card>
+    <Link href={`./shipping/editaddress`} as={`./shipping/editaddress?id=${address.id}`}>
+      <Button color="primary" className="w-1/10 mb-8">Edit Address</Button>
+    </Link>
     </Tab>
   ))
 
@@ -31,8 +34,7 @@ const Addresses = ({addresses, type}) => {
       <div className="flex ">
       <Link href={`./shipping/addaddress`} as={`./shipping/addaddress?type=${type}`}>
         <Button color="primary" className="w-1/10 mb-8 mr-4">Add Address</Button>
-        </Link>
-        <Button color="primary" className="w-1/10 mb-8">Edit Address</Button>
+      </Link>
       </div>
     </div>  
   )
