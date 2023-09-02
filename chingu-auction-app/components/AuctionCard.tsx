@@ -1,39 +1,48 @@
-import { Card, CardHeader, CardBody, CardFooter, Image } from "@nextui-org/react";
+import {
+  Card,
+  CardHeader,
+  CardBody,
+  CardFooter,
+  Image,
+} from '@nextui-org/react'
 interface Props {
-  itemName: string,
-  sellerName: string,
-  itemCondition: string,
-  currentBid: number,
-  amountBids: number,
-  buyPrice: number,
+  itemName: string
+  sellerName: string
+  itemCondition: string
+  currentBid: number
+  amountBids: number
+  buyPrice: number
   timeLeft: string
 }
 
 export function AuctionCard(props: any) {
-
   return (
-    <Card className="py-4">
-      <CardHeader className="pb-0 pt-2 px-4 flex-col items-start">
-        <p className="text-tiny uppercase font-bold"> {props.sellerName}</p>
-        <small className="text-default-500"> Condition {props.itemCondition}</small>
-        <h4 className="font-bold text-large">{props.itemName}</h4>
+    <Card className='py-4'>
+      <CardHeader className='pb-0 pt-2 px-4 flex-col items-start'>
+        <p className='text-tiny uppercase font-bold'> {props.sellerName}</p>
+        <small className='text-default-500'>
+          {' '}
+          Condition {props.itemCondition}
+        </small>
+        <h4 className='font-bold text-large'>{props.itemName}</h4>
       </CardHeader>
-      <CardBody className="overflow-visible py-2">
+      <CardBody className='overflow-visible py-2'>
         <Image
-          alt="Card background"
-          className="object-cover rounded-xl"
-          src="/images/hero-card-complete.jpeg"
+          alt='Card background'
+          className='object-cover rounded-xl'
+          // src="/images/hero-card-complete.jpeg"
+          src='https://picsum.photos/200/300'
           width={270}
         />
       </CardBody>
-      <CardFooter className="text-medium flex-col items-stretch">
-        <div className="flex flex-row justify-between">
+      <CardFooter className='text-medium flex-col items-stretch'>
+        <div className='flex flex-row justify-between'>
           <b>Bid {props.currentBid}</b>
-          <p className="text-default-500">{props.amountBids} Bids</p>
+          <p className='text-default-500'>{props.amountBids} Bids</p>
         </div>
-        <div className="flex flex-row justify-between">
+        <div className='flex flex-row justify-between'>
           <b>Buy at {props.buyPrice}</b>
-          <p className="text-red-500">{props.timeLeft}</p>
+          <p className='text-red-500'>{props.timeLeft}</p>
         </div>
       </CardFooter>
     </Card>

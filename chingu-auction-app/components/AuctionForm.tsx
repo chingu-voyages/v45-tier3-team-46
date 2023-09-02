@@ -1,3 +1,6 @@
+import React from 'react'
+import { Textarea, Input } from '@nextui-org/react'
+
 const AuctionForm = ({
   type,
   itemData,
@@ -5,6 +8,8 @@ const AuctionForm = ({
   submitting,
   handleSubmit,
 }: any) => {
+  const variants = ['flat', 'faded', 'bordered', 'underlined']
+
   return (
     <div>
       <div className='isolate rounded-xl bg-white px-6 py-24 sm:py-32 lg:px-8'>
@@ -39,7 +44,7 @@ const AuctionForm = ({
                 Title
               </label>
               <div className='mt-2.5'>
-                <input
+                <Input
                   onChange={(e) =>
                     setItemData({ ...itemData, title: e.target.value })
                   }
@@ -84,25 +89,31 @@ const AuctionForm = ({
               </div>
             </div>
             <div>
-              <label
-                htmlFor='description'
-                className='block text-sm font-semibold leading-6 text-gray-900'
-              >
-                Description
-              </label>
-              <div className='mt-2.5'>
-                <input
-                  onChange={(e) =>
-                    setItemData({ ...itemData, description: e.target.value })
-                  }
-                  value={itemData.description}
-                  type='text'
-                  name='description'
-                  id='description'
-                  required
-                  className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
-                />
-              </div>
+              <Textarea
+                label='Description'
+                labelPlacement='outside'
+                placeholder='Enter your item description'
+                className='max-w-xs'
+                isRequired
+                value={itemData.description}
+                onChange={(e) => {
+                  setItemData({ ...itemData, description: e.target.value })
+                }}
+              />
+
+              {/* // <div className='mt-2.5'> */}
+              {/* //   <Input
+                  onChange={(e) => */}
+              {/* //   setItemData({ ...itemData, description: e.target.value })
+                  // }
+                //   value={itemData.description}
+                //   type='text'
+                //   name='description'
+                //   id='description'
+                //   required
+                //   className='block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6'
+                // /> */}
+              {/* // </div> */}
             </div>
             <div>
               <label
@@ -112,7 +123,7 @@ const AuctionForm = ({
                 Starting Bid
               </label>
               <div className='mt-2.5'>
-                <input
+                <Input
                   onChange={(e) =>
                     setItemData({ ...itemData, startingBid: e.target.value })
                   }
@@ -134,7 +145,7 @@ const AuctionForm = ({
                 Buy Now Price
               </label>
               <div className='mt-2.5'>
-                <input
+                <Input
                   onChange={(e) =>
                     setItemData({ ...itemData, buyNowPrice: e.target.value })
                   }
@@ -156,7 +167,7 @@ const AuctionForm = ({
                 Auction Length (days)
               </label>
               <div className='mt-2.5'>
-                <input
+                <Input
                   onChange={(e) =>
                     setItemData({ ...itemData, expiresAt: e.target.value })
                   }
@@ -213,7 +224,7 @@ const AuctionForm = ({
                 Images
               </label>
               <div className='mt-2.5'>
-                <input
+                <Input
                   onChange={(e) =>
                     setItemData({ ...itemData, pictures: e.target.value })
                   }
