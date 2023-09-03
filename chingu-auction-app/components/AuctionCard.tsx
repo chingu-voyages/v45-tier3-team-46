@@ -4,6 +4,7 @@ import {
   CardBody,
   CardFooter,
   Image,
+  Divider,
 } from '@nextui-org/react'
 interface Props {
   itemName: string
@@ -25,8 +26,11 @@ export function AuctionCard({ listing }: any) {
           Condition {listing.condition}
         </small>
         <h4 className='font-bold text-large'>{listing.title}</h4>
+
       </CardHeader>
-      <CardBody className='overflow-visible py-2'>
+
+      <Divider />
+      <CardBody className='overflow-visible items-center py-2'>
         <Image
           alt='Card background'
           className='object-cover rounded-xl'
@@ -35,6 +39,7 @@ export function AuctionCard({ listing }: any) {
           width={270}
         />
       </CardBody>
+      <Divider />
       <CardFooter className='text-medium flex-col items-stretch'>
         <div className='flex flex-row justify-between'>
           <b>Current Bid: ${listing.currentBid}</b>
