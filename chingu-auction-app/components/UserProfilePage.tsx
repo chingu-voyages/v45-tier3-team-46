@@ -1,56 +1,112 @@
 import { useSession } from "next-auth/react"
+import { Tabs, Tab } from "@nextui-org/tabs";
+import { Button } from "@nextui-org/button";
+import { Card, CardBody, CardFooter } from "@nextui-org/card";
+import { Image } from "@nextui-org/image"
+import { Divider } from "@nextui-org/divider";
+import { Input } from "@nextui-org/input";
+
+function ItemCard(props: any) {
+  return (
+
+    <Card shadow="sm" isPressable onPress={() => console.log("item pressed")}>
+      <CardBody className="overflow-visible p-0">
+        <Image
+          shadow="sm"
+          radius="lg"
+          width="100%"
+          alt={props.title}
+          className="w-full object-cover h-[140px]"
+          src={props.img}
+        />
+      </CardBody>
+      <CardFooter className="text-small justify-between">
+        <b>{props.title}</b>
+        <p className="text-default-500">{props.price}</p>
+      </CardFooter>
+    </Card>
+
+
+  )
+
+}
 
 export function UserProfilePage(props: any) {
   const { data: session } = useSession()
   const p_style = "mb-1 p-1 border-b-2 border-purple-400 rounded-md"
 
   return (
-    <div className="flex gap-2 p-4 border-2 border-purple-200 rounded-md w-6/12 mx-auto mt-5" id="tab-menu">
-      <div id="left-menu-tab" className="flex flex-col gap-1">
-        <button className="bg-purple-200 border-2 border-purple-400 rounded-md p-1">
-          Details
-        </button>
-        <button className="bg-purple-200 border-2 border-purple-400 rounded-md p-1">
-          Items
-        </button>
-      </div>
-      <div id="show-menu-details">
-        <div className="flex">
-          <p className={`${p_style}`}> User Name: {session?.user?.name} </p>
-          <p>{props.username}</p>
-        </div>
+    <div className="flex w-3/12 flex-col mx-auto">
+      <Tabs aria-label="options">
+        <Tab key="details" title="Details">
+          <Card>
+            <CardBody>
+              <Input
+                isReadOnly
+                type="text"
+                label="Username"
+                variant="bordered"
+                defaultValue={session?.user?.name !== null ? session?.user?.name : ""}
+                className="max-w-xs mb-1"
+              />
 
-        {/* find a way to change password  */}
-        <div className="flex">
-          <p className={`${p_style}`}>Password: {session?.user?.name} </p>
-          <p>{props.password}</p>
-        </div>
+              <Input
+                isReadOnly
+                type="email"
+                label="Email"
+                variant="bordered"
+                defaultValue={session?.user?.email !== null ? session?.user?.email : ""}
+                className="max-w-xs mb-1"
+              />
 
-        <div className="flex">
-          <p className={`${p_style}`}>Email: {session?.user?.email} </p>
-          <p>{props.password}</p>
-        </div>
-        <div className="flex">
-          {/*
-Add a slider to browser items
-Need to create a api to get the Items for sale
-*/}
-          <p className={`${p_style}`} >Items for Sale </p>
-          <p>{props.itemsForSale}</p>
-        </div>
-        <div className="flex">
-          <p className={`${p_style}`}>Items Sold</p>
-          <p>{props.itemsSold}</p>
-        </div>
-        <div className="flex">
-          <p className={`${p_style}`}>Items Purchased</p>
-          <p >{props.itemsPurchased}</p>
-        </div>
-        <div className="flex">
-          <p className={`${p_style}`}>User Address:</p>
-          <p>{props.userAddresses}</p>
-        </div>
-      </div>
-    </div>
+              <Input
+                isReadOnly
+                type="password"
+                label="Password"
+                variant="bordered"
+                defaultValue="******"
+                className="max-w-xs mb-1"
+              />
+
+
+              <Input
+                isReadOnly
+                type="text"
+                label="User Address"
+                variant="bordered"
+                defaultValue="Mommys House"
+                className="max-w-xs mb-1"
+              />
+            </CardBody>
+          </Card>
+        </Tab>
+
+        {/* TODO make this into a seperate component*/}
+
+        <Tab key="items-for-sale" title="Items for Sale" >
+          <Card >
+            <CardBody>
+              <ItemCard />
+            </CardBody>
+          </Card>
+        </Tab>
+        <Tab key="items-sold" title="Items Sold" >
+          <Card >
+            <CardBody>
+              <ItemCard />
+            </CardBody>
+          </Card>
+        </Tab>
+        <Tab key="items-purchased" title="Items Purchased" >
+          <Card >
+            <CardBody>
+              <ItemCard />
+            </CardBody>
+          </Card>
+        </Tab>
+      </Tabs >
+    </div >
+
+
   )
 }
