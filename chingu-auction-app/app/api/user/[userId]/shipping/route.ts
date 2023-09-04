@@ -58,3 +58,37 @@ export async function GET(req: Request) {
   console.log('user addresses', userAddresses)
   return NextResponse.json(userAddresses?.addresses)
 }
+
+export async function PUT(req: Request) {
+  const session = await getServerSession(options)
+  const { user } = session
+  const { oldAddressId, newAddress } = await req.json()
+
+  const updatedUser = await prisma.$transaction([
+    prisma.user.update({
+      where: { id: user.id },
+      data: {
+        addresses: {
+          disconnect: { id: oldAddressId },
+          create: newAddress,
+        },
+      },
+    }),
+    prisma.address.deleteMany({
+      where: {
+        id: oldAddressId,
+        users: {
+          none: {}
+        }
+      },
+    }),
+  ])
+  return NextResponse.json(updatedUser)
+}
+
+// export async function DELETE(req: Request) {
+//   const session = await getServerSession(options)
+//   const { user } = session
+
+//   const addressToDelete = await prisma.address
+// }

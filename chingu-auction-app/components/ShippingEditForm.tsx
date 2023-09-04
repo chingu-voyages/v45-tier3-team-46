@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation'
 import { Input, Button } from "@nextui-org/react"
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 const ShippingEditForm = () => {
     const [addressToEdit, setAddressToEdit] = useState({})
@@ -22,6 +23,7 @@ const ShippingEditForm = () => {
   })
 
   const {userId} = useParams()
+  const router = useRouter()
   useEffect(() => {
     async function getAddressToEdit() {
         const response = await fetch(`/api/user/${userId}/shipping`)
@@ -56,21 +58,27 @@ console.log(addressToEdit)
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
     console.log(formData)
+    const newAddress = {
+      street1: formData.street1,
+      street2: formData.street2,
+      city: formData.city,
+      state: formData.state,
+      zip: Number(formData.zip),
+      addressType: formData.addressType
+    }
+
     try {
         const response = await fetch(`/api/user/${userId}/shipping`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            street1: formData.street1,
-            street2: formData.street2,
-            city: formData.city,
-            state: formData.state,
-            zip: Number(formData.zip),
-            addressType: addressType,
-            userId: Number(userId)
+            newAddress,
+            oldAddressId: addressId,
+            // userId: Number(userId)
           })
         })
         console.log(response)
+        router.push(`/user/${userId}/shipping`)
     } catch (error) {
         console.log(error)
     }

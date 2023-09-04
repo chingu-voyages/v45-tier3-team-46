@@ -9,7 +9,7 @@ const Shipping = async () => {
   console.log('page.tsx addresses', shippingAddresses, billingAddresses)
 
   return (
-    <div className='flex flex-col justify-center items-center h-screen'>
+    <div className='flex flex-col justify-center items-center'>
       <h1 className="text-3xl font-semibold mt-8 mb-4">Edit Shipping and Billing Details</h1>
       <div>
         <h2 className="text-lg font-semibold mb-4">Shipping Addresses</h2>
