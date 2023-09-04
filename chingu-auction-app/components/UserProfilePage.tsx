@@ -5,11 +5,97 @@ import { Card, CardBody, CardFooter } from "@nextui-org/card";
 import { Image } from "@nextui-org/image"
 import { Divider } from "@nextui-org/divider";
 import { Input } from "@nextui-org/input";
+import { getServerSession } from "next-auth";
+import { useEffect, useState } from "react";
+
+interface Picture {
+  id: number,
+  url: string,
+  altText?: string,
+  item: Item,
+  itemId: number
+
+}
+
+interface User {
+  id: number,
+  name?: string,
+  username?: string,
+  password?: string,
+  email: string,
+  emailVerified: string,
+  itemsForSale: Item[]
+  // itemsSold     query itemsForSale where sold: true  
+  itemsPurchased: Item[]
+  // userAddresses   UserAddress[]
+  addresses: Address[],
+  image?: string,
+  accounts: Account[],
+  sessions: Session[],
+}
+interface Account {
+  id: string,
+  user: User,
+  userId: string,
+  type: string,
+  provider: string
+  providerAccountId: string,
+  refresh_token?: string,
+  access_token?: string,
+  expires_at?: number,
+  token_type?: string,
+  scope?: string,
+  id_token?: string,
+  session_state?: string
+
+}
+
+
+interface Address {
+  id: number,
+  street1: string,
+  street2: string,
+  city: string,
+  state: string,
+  zip: string,
+  addressType: string,
+  users: User[]
+}
+
+interface Session {
+  id: string,
+  sessionToken: string
+  user: User,
+  userId: number,
+  expires: string
+}
+
+interface Item {
+  id: number,
+  title: string,
+  buyNowPrice?: number,
+  startingBid: number,
+  currentBid?: number,
+  description: string,
+  pictures: Picture[],
+  seller: User,
+  sellerId: number,
+  sold: boolean,
+  purchasedBy?: User,
+  purchasedById?: number,
+  catergory: string,
+  condition: string,
+  createdAt: string,
+  updatedAt: string,
+  expiresAt: string
+
+}
+
 
 function ItemCard(props: any) {
   return (
 
-    <Card shadow="sm" isPressable onPress={() => console.log("item pressed")}>
+    <Card className="w-96 mt-1 mb-5" shadow="sm" isPressable onPress={() => console.log("item pressed")}>
       <CardBody className="overflow-visible p-0">
         <Image
           shadow="sm"
@@ -33,10 +119,25 @@ function ItemCard(props: any) {
 
 export function UserProfilePage(props: any) {
   const { data: session } = useSession()
-  const p_style = "mb-1 p-1 border-b-2 border-purple-400 rounded-md"
+  const [items, setItems] = useState([])
+
+  useEffect(() => {
+    const fetch_data = async () => {
+      const data = await fetch('/api/user/profile')
+      const items = await data.json()
+      return items
+    }
+
+    const returned_items = fetch_data()
+    returned_items.then((values) => setItems(values))
+  }, [])
+
+  const items_purchased = items.filter((item: Item) => (item.purchasedById))
+  const items_sold = items.filter((item: Item) => (item.sold))
+  const items_on_sale = items.filter((item: Item) => (item.sellerId))
 
   return (
-    <div className="flex w-3/12 flex-col mx-auto">
+    <div className="flex w-5/12 flex-col mx-auto">
       <Tabs aria-label="options">
         <Tab key="details" title="Details">
           <Card>
@@ -80,29 +181,28 @@ export function UserProfilePage(props: any) {
             </CardBody>
           </Card>
         </Tab>
-
-        {/* TODO make this into a seperate component*/}
-
         <Tab key="items-for-sale" title="Items for Sale" >
-          <Card >
-            <CardBody>
-              <ItemCard />
-            </CardBody>
-          </Card>
+          {items_on_sale.map((item: Item, index) => {
+            return (
+              <ItemCard key={index} title={item.title} price={item.buyNowPrice} />
+            )
+          })}
+
         </Tab>
         <Tab key="items-sold" title="Items Sold" >
-          <Card >
-            <CardBody>
-              <ItemCard />
-            </CardBody>
-          </Card>
+          {items_sold.map((item: Item, index) => {
+            return (
+              <ItemCard key={index} title={item.title} price={item.buyNowPrice} />
+            )
+          })}
+
         </Tab>
         <Tab key="items-purchased" title="Items Purchased" >
-          <Card >
-            <CardBody>
-              <ItemCard />
-            </CardBody>
-          </Card>
+          {items_purchased.map((item: Item, index) => {
+            return (
+              <ItemCard key={index} title={item.title} price={item.buyNowPrice} />
+            )
+          })}
         </Tab>
       </Tabs >
     </div >
