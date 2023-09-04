@@ -1,13 +1,4 @@
-import {
-  Table,
-  TableHeader,
-  TableColumn,
-  TableBody,
-  TableRow,
-  TableCell,
-  getKeyValue,
-  Link,
-} from '@nextui-org/react'
+import { Link } from '@nextui-org/react'
 
 const auctionCategories = [
   'Clothing',

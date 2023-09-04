@@ -5,9 +5,7 @@ import Logo from '../public/assets/images/chingu_logo.png'
 // import Avatar from '../public/assets/images/blank-avatar.png'
 import Image from 'next/image'
 // import Link from 'next/link'
-import { useState, Fragment } from 'react'
-import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline'
-import { Menu, Transition } from '@headlessui/react'
+import { useState } from 'react'
 import { signOut } from 'next-auth/react'
 import {
   Navbar,
