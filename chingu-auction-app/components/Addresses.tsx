@@ -6,7 +6,7 @@ import Link from 'next/link'
 // import {Card} from "@nextui-org/card"
 // import {CardBody} from "@nextui-org/card"
 // import {Button} from "@nextui-org/button"
-import {Tabs, Tab, Card, CardBody, Button} from "@nextui-org/react"
+import {Tabs, Tab, Card, CardBody, Button, Chip} from "@nextui-org/react"
 
 const Addresses = ({addresses, type}) => {
 //   const {userId} = useParams()
@@ -23,10 +23,10 @@ const Addresses = ({addresses, type}) => {
         <p>{address.street2}</p>
         <p>{address.city}, {address.state} {address.zip}</p>
       </CardBody>
-    </Card>
     <Link href={`./shipping/editaddress`} as={`./shipping/editaddress?id=${address.id}`}>
-      <Button color="primary" className="w-1/10 mb-8">Edit Address</Button>
+      <Chip color="primary" className="w-1/10 mb-0">Edit Address</Chip>
     </Link>
+    </Card>
     </Tab>
   ))
 

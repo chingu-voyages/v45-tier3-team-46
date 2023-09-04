@@ -59,10 +59,11 @@ export async function GET(req: Request) {
   return NextResponse.json(userAddresses?.addresses)
 }
 
-export async function PUT(req: Request) {
+export async function PUT(req: Request, { params }) {
   const session = await getServerSession(options)
   const { user } = session
   const { oldAddressId, newAddress } = await req.json()
+  console.log(params, 'params')
 
   const updatedUser = await prisma.$transaction([
     prisma.user.update({
