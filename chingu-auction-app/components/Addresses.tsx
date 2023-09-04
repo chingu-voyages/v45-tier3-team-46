@@ -1,7 +1,11 @@
 'use client'
 import React from 'react'
 import Link from 'next/link'
-import { useParams } from 'next/navigation'
+// import {Tabs} from "@nextui-org/tabs"
+// import {Tab} from "@nextui-org/tabs"
+// import {Card} from "@nextui-org/card"
+// import {CardBody} from "@nextui-org/card"
+// import {Button} from "@nextui-org/button"
 import {Tabs, Tab, Card, CardBody, Button} from "@nextui-org/react"
 
 const Addresses = ({addresses, type}) => {
