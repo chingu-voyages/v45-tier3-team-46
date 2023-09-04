@@ -1,7 +1,10 @@
-import React from "react";
+import React from 'react'
 
-type Props = {};
-
-export default function Auctions({}: Props) {
-  return <div>All Auctions desplayed here</div>;
+export default function Auctions() {
+  console.log('this is listing')
+  return (
+    <div>
+      <h1 className='text-center text-5xl mt-12'>Auction Page</h1>
+    </div>
+  )
 }

@@ -4,6 +4,7 @@ import {
   CardBody,
   CardFooter,
   Image,
+  Link,
 } from '@nextui-org/react'
 interface Props {
   itemName: string
@@ -27,13 +28,14 @@ export function AuctionCard({ listing }: any) {
         <h4 className='font-bold text-large'>{listing.title}</h4>
       </CardHeader>
       <CardBody className='overflow-visible py-2'>
-        <Image
-          alt='Card background'
-          className='object-cover rounded-xl'
-          src='https://images.unsplash.com/photo-1693592681357-ae8543a48d28?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxlZGl0b3JpYWwtZmVlZHwzfHx8ZW58MHx8fHx8&auto=format&fit=crop&w=500&q=60'
-          // src={listing.pictures}
-          width={270}
-        />
+        <Link href={`/auctions/${listing.id}`}>
+          <Image
+            alt='Card background'
+            className='object-cover rounded-xl cursor-pointer'
+            src={listing.pictures[0]?.url}
+            width={270}
+          />
+        </Link>
       </CardBody>
       <CardFooter className='text-medium flex-col items-stretch'>
         <div className='flex flex-row justify-between'>
