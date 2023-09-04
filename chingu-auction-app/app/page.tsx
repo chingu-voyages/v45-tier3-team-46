@@ -1,3 +1,4 @@
+'use client'
 import { NextUIProvider } from '@nextui-org/react'
 import { AuctionCard } from '../components/AuctionCard'
 import { AuctionCategories } from '../components/AuctionCategories'
