@@ -5,7 +5,7 @@ import { AuctionCategories } from '../components/AuctionCategories'
 import { FeaturedAuctionFeed } from '../components/FeaturedAuctionFeed'
 import Link from 'next/link'
 
-export default function Home() {
+export default async function Home() {
   return (
     <NextUIProvider>
       <main className=''>

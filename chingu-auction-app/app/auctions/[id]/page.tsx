@@ -110,35 +110,36 @@
 
 // */
 'use client'
+
 import { useEffect, useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import { AuctionCardList } from '@/components/AuctionCardList'
 
-export default function AuctionsDetail({ listing }: Props) {
-  // const { data: session } = useSession()
+export default function AuctionsDetail(props: any, { listing }) {
+  console.log({ listing })
+  const { data: session } = useSession()
   const searchParams = useSearchParams()
   const itemId = Number(searchParams.get('id'))
   const [listingItem, setListingItem] = useState([])
 
+  console.log({ itemId })
+
   useEffect(() => {
     const fetchListingItem = async () => {
-      const res = await fetch(`/api/auctions/${itemId}`)
+      const res = await fetch(`/api/auctions/5`)
       const data = await res.json()
 
-      setListingItem({
-        title: data.title,
-        buyNowPrice: data.buyNowPrice,
-        startingBid: data.startingBid,
-        currentBid: data.currentBid,
-      })
+      setListingItem(data)
     }
-    console.log(listingItem)
+
     if (itemId) fetchListingItem()
+    console.log({ listingItem }, { listing })
   }, [itemId])
+
   return (
     <div>
       <h1 className='text-center text-5xl mt-12'>Auction Details Page</h1>
-      <p>{listingItem.title}</p>
     </div>
   )
 }

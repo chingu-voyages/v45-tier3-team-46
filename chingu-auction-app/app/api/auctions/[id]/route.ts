@@ -6,9 +6,10 @@ const prisma = new PrismaClient()
 
 export async function GET(req: Request, { params }: any) {
   console.log(params)
+  const { id } = params
   try {
     const item = await prisma.item.findUnique({
-      where: { id: Number(params.id) },
+      where: { id: Number(id) },
     })
     return NextResponse.json(item, { status: 200 })
   } catch (error) {
