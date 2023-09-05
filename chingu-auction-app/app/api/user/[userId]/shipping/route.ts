@@ -22,6 +22,25 @@ export async function POST(req: Request) {
     return
 
   try {
+    // check if user already has 3 addresses of this type
+    const numAddresses = await prisma.address.count({
+      where: {
+        users: {
+          some: {
+            id: Number(userId),
+          },
+        },
+        addressType,
+      },
+    })
+
+  if (numAddresses >= 3) {
+    return NextResponse.json(
+      { error: 'You already have the maximum allowed number of addresses of this type' },
+      {status: 400 }
+    )
+  }
+
     const newAddress = await prisma.address.create({
       data: {
         street1,
@@ -34,10 +53,10 @@ export async function POST(req: Request) {
             connect: {
                 id: Number(userId),
             },
-          },
+        },
       }
     })
-    console.log(newAddress)
+    console.log(numAddresses)
     return NextResponse.json(newAddress)
   } catch (error) {
     console.error('Request error', error)

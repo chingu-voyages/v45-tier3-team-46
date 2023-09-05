@@ -29,16 +29,13 @@ const Addresses = ({addresses, type}) => {
     } catch (error) {
       console.log(error)
     }
-
   }
   
-  console.log(addresses)
-  //const billingAddresses = fetch()
   const tabsJSX = addressList?.map((address, index) => (
     <Tab 
       key={`address${index}`} 
       title={index === 0 ? `Default` : `Address ${index+1}`}>
-    <Card className="w-64">
+    <Card className='w-64'>
       <CardBody className='mb-4'>
         <p>{address.street1}</p>
         <p>{address.street2}</p>
@@ -61,14 +58,16 @@ const Addresses = ({addresses, type}) => {
   ))
 
   return (
-      <div className="flex w-full flex-col">
+    <div className='flex w-full flex-col'>
       <Tabs aria-label="Options">
         {tabsJSX}
       </Tabs>
-      <div className="flex ">
-      <Link href={`./shipping/addaddress`} as={`./shipping/addaddress?type=${type}`}>
-        <Button color="primary" className="w-1/10 mb-8 mr-4">Add Address</Button>
-      </Link>
+      <div className='flex '>
+      {addressList.length < 3 &&    // hide Add button if there are already 3 addresses
+        <Link href={`./shipping/addaddress`} as={`./shipping/addaddress?type=${type}`}>
+          <Button color='primary' className='w-1/10 mb-8 mr-4'>Add Address</Button>
+        </Link>
+      }
       </div>
     </div>  
   )
