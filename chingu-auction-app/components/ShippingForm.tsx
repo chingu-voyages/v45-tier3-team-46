@@ -1,7 +1,7 @@
 'use client'
 import React from 'react'
 import { useState } from 'react'
-import { useParams } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import { Input, Button } from "@nextui-org/react"
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
@@ -18,7 +18,7 @@ const ShippingForm = () => {
 
   const searchParams = useSearchParams()
   const search = searchParams.get('type')
-
+  const router = useRouter()
   const {userId} = useParams()
   //console.log(userId, search)
 
@@ -46,6 +46,7 @@ const ShippingForm = () => {
           })
         })
         console.log(response)
+        router.push(`/user/${userId}/shipping`)
     } catch (error) {
         console.log(error)
     }

@@ -1,6 +1,7 @@
 'use client'
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
+import { useParams } from 'next/navigation'
 // import {Tabs} from "@nextui-org/tabs"
 // import {Tab} from "@nextui-org/tabs"
 // import {Card} from "@nextui-org/card"
@@ -9,23 +10,52 @@ import Link from 'next/link'
 import {Tabs, Tab, Card, CardBody, Button, Chip} from "@nextui-org/react"
 
 const Addresses = ({addresses, type}) => {
-//   const {userId} = useParams()
+  const {userId} = useParams()
+  const [addressList, setAddressList] = useState(addresses)
 
+  const deleteAddress = async (addressId) => {
+    console.log(addressId)
+    try {
+      const response = await fetch(`/api/user/${userId}/shipping`, {
+        method: 'DELETE',
+        body: JSON.stringify({
+            addressId
+        })
+      })
+      console.log(response.status)
+      if (response.status === 204)
+        setAddressList(prevAddresses => 
+          prevAddresses.filter(address => address.id !== addressId))
+    } catch (error) {
+      console.log(error)
+    }
+
+  }
+  
   console.log(addresses)
   //const billingAddresses = fetch()
-  const tabsJSX = addresses?.map((address, index) => (
+  const tabsJSX = addressList?.map((address, index) => (
     <Tab 
       key={`address${index}`} 
       title={index === 0 ? `Default` : `Address ${index+1}`}>
     <Card className="w-64">
-      <CardBody>
+      <CardBody className='mb-4'>
         <p>{address.street1}</p>
         <p>{address.street2}</p>
         <p>{address.city}, {address.state} {address.zip}</p>
       </CardBody>
-    <Link href={`./shipping/editaddress`} as={`./shipping/editaddress?id=${address.id}`}>
-      <Chip color="primary" className="w-1/10 mb-0">Edit Address</Chip>
-    </Link>
+    <div className='flex mb-2'>
+      <Link className='ml-5 text-blue-500 hover:underline'
+        href={`./shipping/editaddress`} as={`./shipping/editaddress?id=${address.id}`}
+      >
+        Edit |&nbsp;
+      </Link>
+      <button className='text-blue-500 hover:underline'
+        onClick={() => deleteAddress(address.id)}
+      >
+        Delete 
+      </button>
+    </div>
     </Card>
     </Tab>
   ))

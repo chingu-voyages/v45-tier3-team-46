@@ -50,13 +50,17 @@ export async function GET(req: Request) {
   const { user } = session
   console.log('get addresses', session)
   
-  const userAddresses = await prisma.user.findUnique({
-    where: { id: user.id },
-    include: { addresses: true }
-  })
-
-  console.log('user addresses', userAddresses)
-  return NextResponse.json(userAddresses?.addresses)
+  try {
+    const userAddresses = await prisma.user.findUnique({
+      where: { id: user.id },
+      include: { addresses: true }
+    })
+    console.log('user addresses', userAddresses)
+    return NextResponse.json(userAddresses?.addresses)
+  } catch (error) {
+    console.error('Request error', error)
+    NextResponse.json({ error: 'Error getting addresses', status: 500 })
+  }
 }
 
 export async function PUT(req: Request, { params }) {
@@ -65,31 +69,46 @@ export async function PUT(req: Request, { params }) {
   const { oldAddressId, newAddress } = await req.json()
   console.log(params, 'params')
 
-  const updatedUser = await prisma.$transaction([
-    prisma.user.update({
-      where: { id: user.id },
-      data: {
-        addresses: {
-          disconnect: { id: oldAddressId },
-          create: newAddress,
+  try {
+    const updatedUser = await prisma.$transaction([
+      prisma.user.update({
+        where: { id: user.id },
+        data: {
+          addresses: {
+            disconnect: { id: oldAddressId },
+            create: newAddress,
+          },
         },
-      },
-    }),
-    prisma.address.deleteMany({
-      where: {
-        id: oldAddressId,
-        users: {
-          none: {}
-        }
-      },
-    }),
-  ])
-  return NextResponse.json(updatedUser)
+      }),
+      prisma.address.delete({
+        where: {
+          id: oldAddressId,
+          users: {
+            none: {},
+          }
+        },
+      }),
+    ])
+    return NextResponse.json(updatedUser)
+  } catch (error) {
+    console.error('Request error', error)
+    NextResponse.json({ error: 'Error updating address', status: 500 })
+  }
 }
 
-// export async function DELETE(req: Request) {
-//   const session = await getServerSession(options)
-//   const { user } = session
+export async function DELETE(req: Request) {
+  const session = await getServerSession(options)
+  const { user } = session
+  const { addressId } = await req.json()
+  console.log(addressId, 'addressId')
 
-//   const addressToDelete = await prisma.address
-// }
+  try {
+    const addressToDelete = await prisma.address.delete({
+      where: { id: addressId }
+    })
+    return new Response(null, { status: 204 })
+  } catch (error) {
+    console.error('Request error', error)
+    NextResponse.json({ error: 'Error deleting address', status: 500 })
+  }
+}
