@@ -1,3 +1,5 @@
+'use client'
+
 import { AuctionCard } from '../components/AuctionCard'
 
 export const AuctionCardList = ({ data }) => {

@@ -28,7 +28,7 @@ export function AuctionCard({ listing }: any) {
         <h4 className='font-bold text-large'>{listing.title}</h4>
       </CardHeader>
       <CardBody className='overflow-visible py-2'>
-        <Link href={`/auctions/id=${listing.id}`}>
+        <Link href={`/auctions/${listing.id}`}>
           <Image
             alt='Card background'
             className='object-cover rounded-xl cursor-pointer'
