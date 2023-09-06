@@ -1,12 +1,15 @@
 'use client'
 import React from 'react'
-import { useState } from 'react'
-import { useParams, useRouter } from 'next/navigation'
-import { Input, Button } from "@nextui-org/react"
+import { useState, useEffect } from 'react'
+import { useSearchParams, useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { Input, Button } from "@nextui-org/react"
 
-const ShippingForm = () => {
+const ShippingEditForm = () => {
+  const [addressToEdit, setAddressToEdit] = useState({})
+  const searchParams = useSearchParams()
+  const addressId = Number(searchParams.get('id'))
+
   const [formData, setFormData] = useState({
     street1: '',
     street2: '',
@@ -16,46 +19,63 @@ const ShippingForm = () => {
     addressType: '',
   })
 
-  const searchParams = useSearchParams()
-  const search = searchParams.get('type')
-  const router = useRouter()
   const {userId} = useParams()
-  //console.log(userId, search)
+  const router = useRouter()
+  useEffect(() => {
+    async function getAddressToEdit() {
+      const response = await fetch(`/api/user/${userId}/shipping`)
+      const addresses = await response.json()
+      const address = addresses.find(address => address.id === addressId)
+      setAddressToEdit(address)
+        
+      setFormData({
+        street1: address.street1,
+        street2: address.street2,
+        city: address.city,
+        state: address.state,
+        zip: address.zip,
+        addressType: address.addressType,
+      })
+    }
+
+    getAddressToEdit()
+  }, [])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value }: { name: string, value: string } = event.target
-    console.log(formData)
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }))
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    console.log(formData)
+    const newAddress = {
+      street1: formData.street1,
+      street2: formData.street2,
+      city: formData.city,
+      state: formData.state,
+      zip: Number(formData.zip),
+      addressType: formData.addressType
+    }
+
     try {
-        const response = await fetch(`/api/user/${userId}/shipping`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            street1: formData.street1,
-            street2: formData.street2,
-            city: formData.city,
-            state: formData.state,
-            zip: Number(formData.zip),
-            addressType: search,
-            userId: Number(userId)
-          })
+      const response = await fetch(`/api/user/${userId}/shipping`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          newAddress,
+          oldAddressId: addressId,
         })
-        console.log(response)
-        router.push(`/user/${userId}/shipping`)
+    })
+      console.log(response)
+      router.push(`/user/${userId}/shipping`)
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
   }
 
   return (
     <div>
-      <div className="flex flex-col space-y-4 items-center">
-      <h1 className="mt-4 mb-8 text-3xl">Add a {search} Address</h1>
+    {Object.keys(addressToEdit).length > 0 && (
       <form className="grid grid-cols-2 gap-4 max-w-xl mx-auto" onSubmit={handleSubmit}>
         <div>
           <label htmlFor="street1" className="block text-sm font-medium text-gray-700">Street 1</label>
@@ -79,7 +99,7 @@ const ShippingForm = () => {
         </div>
         <div className="col-span-2 grid grid-cols-2 gap-4">
           <Button color="primary" className="w-full mt-2" type="submit">
-            Add Address
+            Update Address
           </Button>
           <Link href={`../shipping`}>
             <Button color="danger" className="w-full mt-2">
@@ -88,9 +108,9 @@ const ShippingForm = () => {
           </Link>
         </div>
       </form>
-      </div>
+      )}
     </div>
   )
 }
 
-export default ShippingForm
+export default ShippingEditForm
