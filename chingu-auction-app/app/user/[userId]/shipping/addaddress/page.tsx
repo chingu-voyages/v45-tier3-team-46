@@ -1,13 +1,12 @@
-'use client'
 import React from 'react'
 import ShippingForm from '@/components/ShippingForm'
 
 const AddAddress = () => {
   return (
     <>
-      <ShippingForm addressType={'Shipping'} />
+      <ShippingForm />
     </>
   );
 }
 
-export default AddAddress;
+export default AddAddress
