@@ -9,7 +9,7 @@ import { useParams } from 'next/navigation'
 // import {Button} from "@nextui-org/button"
 import {Tabs, Tab, Card, CardBody, Button, Chip} from "@nextui-org/react"
 
-const Addresses = ({addresses, type}) => {
+const ShippingAddresses = ({addresses, type}) => {
   const {userId} = useParams()
   const [addressList, setAddressList] = useState(addresses)
 
@@ -63,7 +63,7 @@ const Addresses = ({addresses, type}) => {
         {tabsJSX}
       </Tabs>
       <div className='flex '>
-      {addressList.length < 3 &&    // hide Add button if there are already 3 addresses
+      {addressList?.length < 3 &&    // hide Add button if there are already 3 addresses
         <Link href={`./shipping/addaddress`} as={`./shipping/addaddress?type=${type}`}>
           <Button color='primary' className='w-1/10 mb-8 mr-4'>Add Address</Button>
         </Link>
@@ -73,4 +73,4 @@ const Addresses = ({addresses, type}) => {
   )
 }
 
-export default Addresses
+export default ShippingAddresses

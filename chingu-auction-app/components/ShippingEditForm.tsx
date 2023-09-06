@@ -1,17 +1,14 @@
 'use client'
 import React from 'react'
 import { useState, useEffect } from 'react'
-import { useParams } from 'next/navigation'
-import { Input, Button } from "@nextui-org/react"
+import { useSearchParams, useRouter, useParams } from 'next/navigation'
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+import { Input, Button } from "@nextui-org/react"
 
 const ShippingEditForm = () => {
-    const [addressToEdit, setAddressToEdit] = useState({})
-    const searchParams = useSearchParams()
-    const addressId = Number(searchParams.get('id'))
-  console.log(addressId)
+  const [addressToEdit, setAddressToEdit] = useState({})
+  const searchParams = useSearchParams()
+  const addressId = Number(searchParams.get('id'))
 
   const [formData, setFormData] = useState({
     street1: '',
@@ -26,38 +23,31 @@ const ShippingEditForm = () => {
   const router = useRouter()
   useEffect(() => {
     async function getAddressToEdit() {
-        const response = await fetch(`/api/user/${userId}/shipping`)
-        const addresses = await response.json()
-        const address = addresses.find(address => address.id === addressId)
-        setAddressToEdit(address)
+      const response = await fetch(`/api/user/${userId}/shipping`)
+      const addresses = await response.json()
+      const address = addresses.find(address => address.id === addressId)
+      setAddressToEdit(address)
         
-        setFormData({
-            street1: address.street1,
-            street2: address.street2,
-            city: address.city,
-            state: address.state,
-            zip: address.zip,
-            addressType: address.addressType,
-          })
+      setFormData({
+        street1: address.street1,
+        street2: address.street2,
+        city: address.city,
+        state: address.state,
+        zip: address.zip,
+        addressType: address.addressType,
+      })
     }
-    
-    getAddressToEdit()
-    console.log(addressToEdit)
-}, [])
 
-console.log(addressToEdit)
-  
-  //console.log(userId, search)
+    getAddressToEdit()
+  }, [])
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value }: { name: string, value: string } = event.target
-    console.log(formData)
     setFormData((prevFormData) => ({ ...prevFormData, [name]: value }))
   }
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault()
-    console.log(formData)
     const newAddress = {
       street1: formData.street1,
       street2: formData.street2,
@@ -68,19 +58,18 @@ console.log(addressToEdit)
     }
 
     try {
-        const response = await fetch(`/api/user/${userId}/shipping`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            newAddress,
-            oldAddressId: addressId,
-            // userId: Number(userId)
-          })
+      const response = await fetch(`/api/user/${userId}/shipping`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          newAddress,
+          oldAddressId: addressId,
         })
-        console.log(response)
-        router.push(`/user/${userId}/shipping`)
+    })
+      console.log(response)
+      router.push(`/user/${userId}/shipping`)
     } catch (error) {
-        console.log(error)
+      console.log(error)
     }
   }
 

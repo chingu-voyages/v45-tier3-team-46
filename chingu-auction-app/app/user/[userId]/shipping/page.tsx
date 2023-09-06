@@ -1,5 +1,5 @@
 import React from 'react'
-import Addresses from '@/components/Addresses'
+import ShippingAddresses from '@/components/ShippingAddresses'
 import Link from 'next/link'
 import getAddresses from './getAddresses'
 
@@ -14,13 +14,13 @@ const Shipping = async () => {
       <div className='flex flex-col md:flex-row justify-center'>
         <div className='mx-10'>
           <h2 className="text-lg font-semibold mb-4">Shipping Addresses</h2>
-          <Addresses addresses={shippingAddresses} type={'Shipping'}/>
+          <ShippingAddresses addresses={shippingAddresses} type={'Shipping'}/>
         </div>
         <div className='mx-10'>
           <Link href={`./shipping/addaddress`} as="./shipping/addaddress?type=Billing">
             <h2 className="text-lg font-semibold mb-4">Billing Addresses</h2>
           </Link>
-          <Addresses addresses={billingAddresses} type={'Billing'}/>
+          <ShippingAddresses addresses={billingAddresses} type={'Billing'}/>
         </div>
       </div>
     </div>
