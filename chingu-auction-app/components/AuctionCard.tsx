@@ -1,10 +1,7 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Image,
-} from '@nextui-org/react'
+import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/card";
+import { Image } from "@nextui-org/image";
+import { Divider } from "@nextui-org/divider";
+
 interface Props {
   itemName: string
   sellerName: string
@@ -18,6 +15,7 @@ interface Props {
 export function AuctionCard({ listing }: any) {
   console.log('pictures data', { listing })
   return (
+
     <Card className='py-4'>
       <CardHeader className='pb-0 pt-2 px-4 flex-col items-start'>
         <p className='text-tiny uppercase font-bold'>seller</p>
@@ -34,6 +32,7 @@ export function AuctionCard({ listing }: any) {
           // src={listing.pictures}
           width={270}
         />
+        <Divider />
       </CardBody>
       <CardFooter className='text-medium flex-col items-stretch'>
         <div className='flex flex-row justify-between'>
@@ -44,6 +43,7 @@ export function AuctionCard({ listing }: any) {
           <b>Buy Now Price: ${listing.buyNowPrice}</b>
           <p className='text-red-500'>Ending At: {listing.expiresAt}</p>
         </div>
+
       </CardFooter>
     </Card>
   )
