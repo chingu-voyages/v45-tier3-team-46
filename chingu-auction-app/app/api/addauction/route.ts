@@ -61,7 +61,8 @@ export async function handler(req: Request) {
 
   async function getPostedItems(req) {
     try {
-      const item = await prisma.item.findMany()
+      const item = await prisma.item.findMany({ include: { pictures: true } })
+
       return NextResponse.json(item, { status: 200 })
     } catch (error) {
       console.log(error)

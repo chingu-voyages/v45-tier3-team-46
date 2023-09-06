@@ -4,25 +4,26 @@ import { useState, useEffect } from 'react'
 import { AuctionCard } from '../components/AuctionCard'
 import { Input } from '@nextui-org/react'
 import { SearchIcon } from '../public/assets/icons/SearchIcon'
+import { AuctionCardList } from '../components/AuctionCardList'
 
-const AuctionCardList = ({ data }) => {
-  const getRandomIndex = Math.floor(Math.random() * data.length)
-  const secondIndex = getRandomIndex + 6
-  return (
-    <div className='grid mb-10 sm:grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3'>
-      {data.slice(getRandomIndex, secondIndex).map((listing: any) => (
-        <AuctionCard key={listing.id} listing={listing} />
-      ))}
-    </div>
-  )
-}
+// const AuctionCardList = ({ data }) => {
+//   const getRandomIndex = Math.floor(Math.random() * data.length)
+//   const secondIndex = getRandomIndex + 6
+//   return (
+//     <div className='grid mb-10 sm:grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-3'>
+//       {data.slice(getRandomIndex, secondIndex).map((listing: any) => (
+//         <AuctionCard key={listing.id} listing={listing} />
+//       ))}
+//     </div>
+//   )
+// }
 export const FeaturedAuctionFeed = (props: any) => {
   const [searchQuery, setSearchQuery] = useState('')
   const [auctionListing, setAuctionListing] = useState([])
 
   useEffect(() => {
     const fetchItemListing = async () => {
-      const res = await fetch('/api/addauction')
+      const res = await fetch('/api/auctions')
       const data = await res.json()
 
       setAuctionListing(data)
