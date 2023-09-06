@@ -1,6 +1,9 @@
 "use client"
 import React, { useState } from 'react'
-import {signIn} from "next-auth/react"
+import { signIn } from "next-auth/react"
+import { Input } from "@nextui-org/input";
+
+import { Button } from "@nextui-org/button";
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -26,14 +29,14 @@ const SignUp = () => {
     }
 
     const response = await fetch('/api/signup', {
-        method: 'POST',
-        body: JSON.stringify(newUser)
+      method: 'POST',
+      body: JSON.stringify(newUser)
     })
 
     const user = await response.json()
     // login after signup, redirect to '/' instead of previous page
     if (user) {
-      await signIn("credentials", { 
+      await signIn("credentials", {
         username: formData.username,
         password: formData.password,
         callbackUrl: '/'
@@ -45,51 +48,53 @@ const SignUp = () => {
   const signUpWithOAuth = async (provider: string) => {
     // change callbackUrl to a "finish signup" page?
     try {
-        await signIn(provider, { callbackUrl: '/' })
+      await signIn(provider, { callbackUrl: '/' })
     } catch (error) {
-        // handle OAuthAccountNotLinked error with "You are already 
-        // logged in" notification?
-        console.log(error)
+      // handle OAuthAccountNotLinked error with "You are already 
+      // logged in" notification?
+      console.log(error)
     }
   }
 
   return (
     <div className="flex-col m-auto sm:shadow-md w-7/8 sm:w-1/2">
       <h1 className="text-2xl text-center mt-24 p-8 mb-3">Register for Chingu Auctions</h1>
-      <form className="flex flex-col gap-3 m-10 p-8" onSubmit={handleSignup}>
-        <input
-          className="shadow rounded p-2"
+      <form className="flex flex-col gap-3 m-10 p-8 md:w-7/12 mx-auto" onSubmit={handleSignup}>
+        <Input
+
+          variant="bordered"
           type="text"
           name="username"
           value={formData.username}
           onChange={handleChange}
           placeholder="Username"
         />
-        <input
-          className="shadow rounded p-2"
+        <Input
+
+          variant="bordered"
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           placeholder="Email"
         />
-        <input
-          className="shadow rounded p-2"
+        <Input
+          variant="bordered"
           type="password"
           name="password"
           value={formData.password}
           onChange={handleChange}
           placeholder="Password"
         />
-        <button type="submit" className="rounded shadow w-auto bg-blue-300 mt-2 mb-2 p-1 font-medium">
+        <Button color='primary' type="submit" variant="shadow">
           Sign Up
-        </button>
-        <button type="button" onClick={() => signUpWithOAuth('google')} name="oauth" className="rounded shadow w-auto bg-blue-300 mb-2 p-1 font-medium">
+        </Button>
+        <Button color='primary' type="button" variant="shadow" onClick={() => signUpWithOAuth('google')} name="oauth">
           Sign up with Google
-        </button>
-        <button type="button" onClick={() => signUpWithOAuth('github')} name="oauth" className="rounded shadow w-auto bg-blue-300 mb-2 p-1 font-medium">
+        </Button>
+        <Button color='primary' type="button" variant="shadow" onClick={() => signUpWithOAuth('github')} name="oauth">
           Sign up with Github
-        </button>
+        </Button>
       </form>
     </div>
   )
