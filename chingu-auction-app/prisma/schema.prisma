@@ -30,7 +30,7 @@ model Item {
   buyNowPrice     Decimal?        @db.Decimal(10,2)
   startingBid     Decimal         @db.Decimal(10,2)
   reservePrice    Decimal?        @db.Decimal(10,2)
-  currentBid      Decimal?        @db.Decimal(10,2)
+  currentBid      Decimal?        @db.Decimal(10,2)  // remove?
   // new fields for auctions; move to Auction table?
   bidders         User[]
   bids            Bid[]          
@@ -65,6 +65,7 @@ model Bid {
   bidder          User            @relation(fields: [bidderId], references: [id])
   bidderId        Int
   createdAt       DateTime        @default(now())
+  won             Boolean         @default(false)
 
   @@index([bidderId])
   @@index([itemId])
