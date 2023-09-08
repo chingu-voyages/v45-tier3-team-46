@@ -24,8 +24,8 @@ export function AuctionCategories(props: any) {
           </h1>
         </div>
         <ul className='grid sm:grid-cols-2 md:grid-cols-3 gap-3 mt-3'>
-          {auctionCategories.map((category: string) => (
-            <Link href={`/auctions?${category}`}>
+          {auctionCategories.map((category: string, index) => (
+            <Link key={index} href={`/auctions?${category}`}>
               <li className='text-lg mx-10'>{category}</li>
             </Link>
           ))}
