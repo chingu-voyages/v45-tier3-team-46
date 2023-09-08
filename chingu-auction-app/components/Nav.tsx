@@ -77,6 +77,14 @@ const Nav = (props) => {
           </NavbarItem>
           {props.session ? (
             <NavbarItem>
+              <Link color='foreground' href={`/user/${props.session.user.id}/profile`}>
+                Profile
+              </Link>
+            </NavbarItem>
+          ) : null}
+
+          {props.session ? (
+            <NavbarItem>
               <Link color='foreground' href='/addauction'>
                 Add Item
               </Link>
@@ -126,15 +134,15 @@ const Nav = (props) => {
                   index === 1
                     ? 'warning'
                     : index === menuItems.length - 1
-                    ? 'danger'
-                    : 'foreground'
+                      ? 'danger'
+                      : 'foreground'
                 }
                 href={
                   item === 'Profile'
                     ? '/user/profile'
                     : item === 'Logout'
-                    ? '/'
-                    : `/${item}`.toLowerCase()
+                      ? '/'
+                      : `/${item}`.toLowerCase()
                 }
                 size='lg'
               >
