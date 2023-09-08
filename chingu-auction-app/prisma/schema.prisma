@@ -33,7 +33,8 @@ model Item {
   currentBid      Decimal?        @db.Decimal(10,2)  // remove?
   // new fields for auctions; move to Auction table?
   bidders         User[]
-  bids            Bid[]          
+  bids            Bid[]
+  auctionEnded    Boolean         @default(false)
 
   @@index([sellerId])
   @@index([purchasedById])
