@@ -89,13 +89,8 @@ interface Item {
 
 function ItemCard(props: any) {
   return (
-    <Card
-      className='w-96 mt-1 mb-5'
-      shadow='sm'
-      isPressable
-      onPress={() => console.log('item pressed')}
-    >
-      <CardBody className='overflow-visible p-0'>
+    <Card className="w-80 mt-1 mb-5" shadow="sm" isPressable onPress={() => console.log("pressed")}>
+      <CardBody className="overflow-visible p-0">
         <Image
           shadow='sm'
           radius='lg'
@@ -133,9 +128,10 @@ export function UserProfilePage(props: any) {
   const items_on_sale = items.filter((item: Item) => item.sellerId)
 
   return (
-    <div className='flex w-5/12 flex-col mx-auto'>
-      <Tabs aria-label='options'>
-        <Tab key='details' title='Details'>
+
+    <div className="flex w-9/12 flex-col items-start mx-auto mt-2">
+      <Tabs aria-label="options">
+        <Tab key="details" title="Details">
           <Card>
             <CardBody>
               <Input
@@ -180,36 +176,34 @@ export function UserProfilePage(props: any) {
             </CardBody>
           </Card>
         </Tab>
-        <Tab key='items-for-sale' title='Items for Sale'>
-          {items_on_sale.map((item: Item, index) => {
-            return (
-              <ItemCard key={index} title={item.title} price={item.buyNowPrice}>
-                <Image src={item.pictures[0].url} />
-              </ItemCard>
-            )
-          })}
+        <Tab key="items-for-sale" title="Items for Sale" >
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+            {items_on_sale.map((item: Item, index) => {
+              return (
+                <ItemCard key={index} title={item.title} price={item.buyNowPrice} />
+              )
+            })}
+          </div>
         </Tab>
-        <Tab key='items-sold' title='Items Sold'>
-          {items_sold.map((item: Item, index) => {
-            return (
-              <ItemCard
-                key={index}
-                title={item.title}
-                price={item.buyNowPrice}
-              />
-            )
-          })}
+        <Tab key="items-sold" title="Items Sold" >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+            {items_sold.map((item: Item, index) => {
+              return (
+                <ItemCard key={index} title={item.title} price={item.buyNowPrice} img={item.pictures} />
+              )
+            })}
+          </div>
+
         </Tab>
-        <Tab key='items-purchased' title='Items Purchased'>
-          {items_purchased.map((item: Item, index) => {
-            return (
-              <ItemCard
-                key={index}
-                title={item.title}
-                price={item.buyNowPrice}
-              />
-            )
-          })}
+        <Tab key="items-purchased" title="Items Purchased" >
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-2">
+            {items_purchased.map((item: Item, index) => {
+              return (
+                <ItemCard key={index} title={item.title} price={item.buyNowPrice} />
+              )
+            })}
+          </div>
         </Tab>
       </Tabs>
     </div>
