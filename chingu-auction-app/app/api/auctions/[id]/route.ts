@@ -35,10 +35,25 @@ export async function POST(req: Request, { params }: any) {
       where: { id: Number(id) },
     })
 
+    if (item?.expiresAt?.getTime() <= Date.now()) {
+      return NextResponse.json(
+        {error: 'Auction has already ended' },
+        { status: 500 }
+      )
+    }
+
+
     const highestBid = await prisma.bid.findFirst({
       where: { itemId: item?.id },
       orderBy: { bidAmount: 'desc' },
     })
+
+    if (highestBid?.bidderId === user?.id) {
+      return NextResponse.json(
+        {error: 'You are already the highest bidder' },
+        { status: 500 }
+      )
+    }
 
     if (Number(bidData?.bidAmount) < Number(highestBid?.bidAmount) + .50) {
       return NextResponse.json(

@@ -28,10 +28,6 @@ export default function AuctionsDetail(props: any, { listing }) {
     console.log(listingItem)
   }, [itemId])
 
-  function handleChange(event) {
-    setBidAmount(event.target.value)
-  }
-
   async function placeBid() {
     try {
       const response = await fetch(`/api/auctions/${itemId}/`, {
@@ -43,6 +39,7 @@ export default function AuctionsDetail(props: any, { listing }) {
       })
 
       console.log(response)
+      console.log(await response.json())
     } catch (error) {
       console.log(error)
     }
@@ -51,8 +48,18 @@ export default function AuctionsDetail(props: any, { listing }) {
   return (
     <div>
       <h1 className='text-center text-5xl mt-12'>Auction Details Page</h1>
-      <Input type="text" id="enterBid" name="enterBid" value={bidAmount} onChange={handleChange} className="mt-1" />
-      <Button color='primary' className='w-1/10 mb-8 mr-4' onClick={placeBid}>Place Bid</Button>
+      <Input 
+        type="text" 
+        id="enterBid" 
+        name="enterBid" 
+        value={bidAmount} 
+        onChange={(event) => setBidAmount(event.target.value)} 
+        className="mt-1" />
+      <Button 
+        color='primary' 
+        className='w-1/10 mb-8 mr-4' 
+        onClick={placeBid}>Place Bid
+      </Button>
     </div>
   )
 }
