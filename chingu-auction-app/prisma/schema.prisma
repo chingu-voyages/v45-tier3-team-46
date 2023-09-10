@@ -35,7 +35,7 @@ model Item {
   bidders         User[]
   bids            Bid[]
   auctionEnded    Boolean         @default(false)
-  soldPrice       Decimal         @db.Decimal(10,2) 
+  soldPrice       Decimal?         @db.Decimal(10,2) 
 
   @@index([sellerId])
   @@index([purchasedById])
