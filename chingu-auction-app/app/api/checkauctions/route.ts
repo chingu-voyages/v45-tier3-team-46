@@ -41,6 +41,7 @@ export async function GET(req: Request) {
           },
           auctionEnded: true,
           sold: true,
+          soldPrice: highestBid?.bidAmount,
         }
       })
       // send notification to buyer?
