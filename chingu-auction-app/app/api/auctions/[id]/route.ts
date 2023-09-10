@@ -23,6 +23,7 @@ export async function GET(req: Request, { params }: any) {
   }
 }
 
+// bidding logic
 export async function POST(req: Request, { params }: any) {
   const { id } = params
   const bidData = await req.json()
@@ -41,7 +42,6 @@ export async function POST(req: Request, { params }: any) {
         { status: 500 }
       )
     }
-
 
     const highestBid = await prisma.bid.findFirst({
       where: { itemId: item?.id },

@@ -30,11 +30,12 @@ model Item {
   buyNowPrice     Decimal?        @db.Decimal(10,2)
   startingBid     Decimal         @db.Decimal(10,2)
   reservePrice    Decimal?        @db.Decimal(10,2)
-  currentBid      Decimal?        @db.Decimal(10,2)  // remove?
+  //currentBid      Decimal?        @db.Decimal(10,2)  // remove?
   // new fields for auctions; move to Auction table?
   bidders         User[]
   bids            Bid[]
   auctionEnded    Boolean         @default(false)
+  soldPrice       Decimal         @db.Decimal(10,2) 
 
   @@index([sellerId])
   @@index([purchasedById])
