@@ -1,7 +1,7 @@
 import { IdentificationIcon } from '@heroicons/react/24/outline'
 import { PrismaClient } from '@prisma/client'
 import { NextResponse } from 'next/server'
-import { getServerSession } from "next-auth"
+import { getServerSession } from 'next-auth'
 import { options } from '../../auth/[...nextauth]/options'
 
 const prisma = new PrismaClient()
@@ -12,6 +12,7 @@ export async function GET(req: Request, { params }: any) {
   try {
     const item = await prisma.item.findUnique({
       where: { id: Number(id) },
+      include: { pictures: true },
     })
     return NextResponse.json(item, { status: 200 })
   } catch (error) {
@@ -38,7 +39,7 @@ export async function POST(req: Request, { params }: any) {
 
     if (item?.expiresAt?.getTime() <= Date.now()) {
       return NextResponse.json(
-        {error: 'Auction has already ended' },
+        { error: 'Auction has already ended' },
         { status: 500 }
       )
     }
@@ -50,30 +51,27 @@ export async function POST(req: Request, { params }: any) {
 
     if (highestBid?.bidderId === user?.id) {
       return NextResponse.json(
-        {error: 'You are already the highest bidder' },
+        { error: 'You are already the highest bidder' },
         { status: 500 }
       )
     }
 
-    if (Number(bidData?.bidAmount) < Number(highestBid?.bidAmount) + .50) {
-      return NextResponse.json(
-        {error: 'Bid too low' },
-        { status: 500 }
-      )
+    if (Number(bidData?.bidAmount) < Number(highestBid?.bidAmount) + 0.5) {
+      return NextResponse.json({ error: 'Bid too low' }, { status: 500 })
     }
 
     const newBid = await prisma.bid.create({
       data: {
         bidAmount: Number(bidData?.bidAmount),
-        item: { 
+        item: {
           connect: { id: item?.id },
         },
-        bidder: { 
+        bidder: {
           connect: { id: user?.id },
-        }
+        },
       },
     })
-    
+
     console.log(newBid)
     return NextResponse.json(newBid, { status: 200 })
   } catch (error) {

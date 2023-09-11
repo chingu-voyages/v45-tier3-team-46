@@ -37,7 +37,6 @@ export async function handler(req: Request) {
           title,
           buyNowPrice,
           startingBid,
-          currentBid: startingBid,
           description,
           pictures: {
             create: pictures.map((pic) => ({ url: pic })), // add altText later
