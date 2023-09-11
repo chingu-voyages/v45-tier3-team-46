@@ -11,9 +11,29 @@ import {
   Input,
   Button,
 } from '@nextui-org/react'
+import { useState } from 'react'
 
 export default function AuctionDetailsCard({ data }) {
   console.log({ data })
+  const [bidAmount, setBidAmount] = useState([])
+
+  async function placeBid() {
+    try {
+      const response = await fetch(`/api/auctions/${data.id}/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ bidAmount: bidAmount }),
+      })
+
+      console.log(response)
+      console.log(await response.json())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <div>
       <div className='grid grid-cols-1 md:grid-cols-5 m-10 gap-8'>
@@ -94,10 +114,13 @@ export default function AuctionDetailsCard({ data }) {
               <Input
                 type='text'
                 label='$ bid'
-                onChange={() => e.target.value}
+                onChange={(e) => setBidAmount(e.target.value)}
+                value={bidAmount}
               />
             </div>
-            <Button color='primary'>Bid</Button>
+            <Button color='primary' onClick={placeBid}>
+              Bid
+            </Button>
           </Card>
         </div>
       </div>
