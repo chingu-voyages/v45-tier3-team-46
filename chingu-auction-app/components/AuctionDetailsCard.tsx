@@ -15,6 +15,7 @@ import { useState } from 'react'
 
 export default function AuctionDetailsCard({ data }) {
   console.log({ data })
+
   const [bidAmount, setBidAmount] = useState([])
 
   async function placeBid() {
