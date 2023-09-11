@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server"
 import prisma from "@/lib/prisma"
+import { isTemplateExpression } from "typescript"
 
 export async function GET(req: Request) {
   const now = new Date()
@@ -26,6 +27,7 @@ export async function GET(req: Request) {
         orderBy: { bidAmount: 'desc' },
       })
 
+      // if any operation fails, they all fail together
       await prisma.$transaction([
         prisma.bid.update({
           where: { id: highestBid?.id },
@@ -33,7 +35,7 @@ export async function GET(req: Request) {
         }),
         prisma.item.update({
           where: {
-            id: auctionItem.id,
+            id: auctionItem?.id,
           },
           data: {
             purchasedBy: { 
@@ -46,7 +48,38 @@ export async function GET(req: Request) {
             soldPrice: highestBid?.bidAmount,
           }
         }),
-        
+        // notification to buyer
+        prisma.notification.create({
+          data: {
+            message: "You have won an auction!",
+            item: {
+              connect: {
+                id: auctionItem?.id,
+              },
+            },
+            user: {
+              connect: {
+                id: highestBid?.bidderId
+              },
+            },
+          }
+        }),
+        // notification to seller
+        prisma.notification.create({
+          data: {
+            message: "Your item has been purchased!",
+            item: {
+              connect: {
+                id: auctionItem?.id,
+              },
+            },
+            user: {
+              connect: {
+                id: auctionItem?.sellerId,
+              },
+            },
+          }
+        })
       ])
       
     } else {
