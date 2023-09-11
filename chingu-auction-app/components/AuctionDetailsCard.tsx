@@ -80,8 +80,8 @@ export default function AuctionDetailsCard({ data }) {
           </Card>
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-5 m-10 gap-8'>
-        <div className='sm:col-start-2 col-span-3'>
+      <div className='grid grid-cols-3 md:grid-cols-5 m-10 gap-8'>
+        <div className='md:col-start-2 col-span-3'>
           <Card className='max-w-[600px]'>
             <CardHeader className='flex gap-3'>
               <div>
