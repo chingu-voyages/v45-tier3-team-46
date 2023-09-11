@@ -44,10 +44,18 @@ export async function POST(req: Request, { params }: any) {
       )
     }
 
+    if (Number(bidData?.bidAmount < Number(item?.startingBid))) {
+      return NextResponse.json(
+        { error: 'Bid lower than startingBid' },
+        { status: 500 }
+      )
+    }
+    
     const highestBid = await prisma.bid.findFirst({
       where: { itemId: item?.id },
       orderBy: { bidAmount: 'desc' },
     })
+
 
     if (highestBid?.bidderId === user?.id) {
       return NextResponse.json(
