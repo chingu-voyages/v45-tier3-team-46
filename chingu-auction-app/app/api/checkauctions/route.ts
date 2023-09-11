@@ -25,26 +25,30 @@ export async function GET(req: Request) {
         where: { itemId: auctionItem?.id },
         orderBy: { bidAmount: 'desc' },
       })
-      await prisma.bid.update({
-        where: { id: highestBid?.id },
-        data: { won: true }
-      })
-      await prisma.item.update({
-        where: {
-          id: auctionItem.id,
-        },
-        data: {
-          purchasedBy: { 
-            connect: { 
-              id: highestBid?.bidderId,
-            },
+
+      await prisma.$transaction([
+        prisma.bid.update({
+          where: { id: highestBid?.id },
+          data: { won: true }
+        }),
+        prisma.item.update({
+          where: {
+            id: auctionItem.id,
           },
-          auctionEnded: true,
-          sold: true,
-          soldPrice: highestBid?.bidAmount,
-        }
-      })
-      // send notification to buyer?
+          data: {
+            purchasedBy: { 
+              connect: { 
+                id: highestBid?.bidderId,
+              },
+            },
+            auctionEnded: true,
+            sold: true,
+            soldPrice: highestBid?.bidAmount,
+          }
+        }),
+        
+      ])
+      
     } else {
       await prisma.item.update({
         where: {
