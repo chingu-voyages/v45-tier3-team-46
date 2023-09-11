@@ -30,12 +30,14 @@ model Item {
   buyNowPrice     Decimal?        @db.Decimal(10,2)
   startingBid     Decimal         @db.Decimal(10,2)
   reservePrice    Decimal?        @db.Decimal(10,2)
+  // for currentBid, query for bids and findFirst orderBy desc
   //currentBid      Decimal?        @db.Decimal(10,2)  // remove?
   // new fields for auctions; move to Auction table?
   bidders         User[]
   bids            Bid[]
   auctionEnded    Boolean         @default(false)
-  soldPrice       Decimal?         @db.Decimal(10,2) 
+  soldPrice       Decimal?        @db.Decimal(10,2) 
+  notifications   Notification[]
 
   @@index([sellerId])
   @@index([purchasedById])
@@ -44,19 +46,20 @@ model Item {
 model User {
   id              Int             @id @default(autoincrement())
   name            String?
-  username        String?          @unique
+  username        String?         @unique
   password        String?
   email           String          @unique
   emailVerified   DateTime?
-  itemsForSale    Item[]          @relation("ItemsForSale")
+  image           String?
   // itemsSold     query itemsForSale where sold: true  
+  itemsForSale    Item[]          @relation("ItemsForSale")
   itemsPurchased  Item[]          @relation("ItemsPurchased")  
   addresses       Address[]
-  image           String?
   accounts        Account[]
   sessions        Session[]
   bids            Bid[]
-  biddingOn       Item[]         
+  biddingOn       Item[]      
+  notifications   Notification[]   
 }
 
 model Bid {
@@ -71,6 +74,19 @@ model Bid {
 
   @@index([bidderId])
   @@index([itemId])
+}
+
+model Notification {
+  id              Int             @id @default(autoincrement())
+  message         String
+  item            Item            @relation(fields: [itemId], references: [id])
+  itemId          Int
+  user            User            @relation(fields: [userId], references: [id])
+  userId          Int
+  createdAt       DateTime        @default(now())
+
+  @@index([itemId])
+  @@index([userId])
 }
 
 model Address {
