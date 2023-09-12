@@ -4,17 +4,9 @@ import { NextResponse } from 'next/server'
 
 const prisma = new PrismaClient()
 
-export async function handler(req: Request) {
-  if (req.method === 'POST') {
-    console.log(req.body, '1')
-    return await postItem(req)
-  } else if (req.method === 'GET') {
-    return await getPostedItems(req)
-  } else {
-    return NextResponse.json({ message: 'Method not allowed', status: 405 })
-  }
 
-  async function postItem(req: any) {
+  export const POST = async (req: Request, { params }: any) {
+
     const {
       title,
       buyNowPrice,
@@ -30,6 +22,7 @@ export async function handler(req: Request) {
     const currentDate = Date.now()
     const endDate = new Date(currentDate + expiresAt)
     console.log(endDate)
+  
 
     try {
       const newEntry = await prisma.item.create({
@@ -58,7 +51,7 @@ export async function handler(req: Request) {
     }
   }
 
-  async function getPostedItems(req) {
+export const GET = async(req) {
     try {
       const item = await prisma.item.findMany({ include: { pictures: true } })
 
@@ -71,6 +64,5 @@ export async function handler(req: Request) {
       })
     }
   }
-}
 
-export { handler as GET, handler as POST }
+
