@@ -4,7 +4,7 @@ import { useState } from 'react'
 import { useSession } from 'next-auth/react'
 import AuctionForm from '../../components/AuctionForm'
 
-const AddAuction = (props) => {
+const AddAuction = (props: any) => {
   const { data: session } = useSession()
   console.log(session?.user?.id)
 
