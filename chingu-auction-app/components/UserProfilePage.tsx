@@ -1,5 +1,5 @@
 'use client'
-import { getSession, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import { Tabs, Tab } from '@nextui-org/tabs'
 import { getServerSession } from "next-auth"
 import { options } from '../app//api/auth/[...nextauth]/options'
@@ -9,9 +9,15 @@ import { Input } from '@nextui-org/input'
 import { useEffect, useState } from 'react'
 import { Item } from '../app/utils/types'
 import { useParams } from 'next/navigation'
+import { Link } from '@nextui-org/link'
+import { useRouter } from 'next/navigation'
+
+
 function ItemCard(props: any) {
+
+  const router = useRouter()
   return (
-    <Card className="w-72 h-72 mt-1 mb-5" shadow="sm" isPressable onPress={() => console.log("pressed")}>
+    <Card className="w-72 h-72 mt-1 mb-5" shadow="sm" isPressable onPress={() => router.push(`/auctions/${props.id}`)}>
       <CardBody className="overflow-visible p-0">
         <Image
           shadow='sm'
@@ -35,7 +41,7 @@ export function UserProfilePage(props: any) {
   const { data: session } = useSession()
   const { userId } = useParams()
   const [items, setItems] = useState([])
-  const tab_card_style = "grid grid-cols-1 lg:grid-cols-3  md:grid-cols-2 gap-3"
+  const tab_card_style = "grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3"
 
 
   useEffect(() => {
@@ -76,6 +82,9 @@ export function UserProfilePage(props: any) {
                 type='email'
                 label='Email'
                 variant='bordered'
+                placeholder={
+                  session?.user?.email !== null ? session?.user?.email : ''
+                }
                 defaultValue={
                   session?.user?.email !== null ? session?.user?.email : ''
                 }
@@ -104,29 +113,29 @@ export function UserProfilePage(props: any) {
         </Tab>
         <Tab key="items-for-sale" title="Items for Sale" >
 
-          {items.length === 0 ? "No Items For Sale" : <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3">
+          {items.length === 0 ? "No Items For Sale" : <div className={`${tab_card_style}`}>
             {items_on_sale.map((item: Item, index) => {
               return (
-                <ItemCard key={index} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
+                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
               )
             })}
           </div>}
         </Tab>
         <Tab key="items-sold" title="Items Sold" >
-          {items.length === 0 ? "No Items Sold" : <div className="grid grid-cols-1 lg:grid-cols-3  md:grid-cols-2 gap-3">
+          {items.length === 0 ? "No Items Sold" : <div className={`${tab_card_style}`}>
             {items_sold.map((item: Item, index) => {
               return (
-                <ItemCard key={index} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
+                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
               )
             })}
           </div>}
 
         </Tab>
         <Tab key="items-purchased" title="Items Purchased" >
-          {items.length === 0 ? "No Items Purchased" : <div className="grid grid-cols-1 lg:grid-cols-3  md:grid-cols-2  gap-3">
+          {items.length === 0 ? "No Items Purchased" : <div className={`${tab_card_style}`}>
             {items_purchased.map((item: Item, index) => {
               return (
-                <ItemCard key={index} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
+                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
               )
             })}
           </div>}
