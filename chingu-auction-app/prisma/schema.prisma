@@ -84,6 +84,7 @@ model Notification {
   user            User            @relation(fields: [userId], references: [id])
   userId          Int
   createdAt       DateTime        @default(now())
+  isNew           Boolean         @default(true)
 
   @@index([itemId])
   @@index([userId])
