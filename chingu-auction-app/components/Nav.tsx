@@ -7,6 +7,7 @@ import Image from 'next/image'
 // import Link from 'next/link'
 import { useState } from 'react'
 import { signOut } from 'next-auth/react'
+import Notifications from './Notifications'
 import {
   Navbar,
   NavbarBrand,
@@ -99,24 +100,27 @@ const Nav = (props) => {
           </NavbarItem>
           <NavbarItem>
             {props.session ? (
-              <Dropdown>
-                <DropdownTrigger>
-                  <Avatar src='https://i.pravatar.cc/150' />
-                </DropdownTrigger>
-                <DropdownMenu aria-label='Static Actions'>
-                  <DropdownItem key='profile'>
-                    <Link href='/user/profile'>Profile</Link>
-                  </DropdownItem>
-                  <DropdownItem
-                    key='logout'
-                    className='text-danger'
-                    color='danger'
-                    onClick={() => signOut()}
-                  >
-                    <Link href='/'>Logout</Link>
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+              <div className='flex items-center'>
+                <Notifications />
+                <Dropdown>
+                  <DropdownTrigger>
+                    <Avatar src='https://i.pravatar.cc/150' />
+                  </DropdownTrigger>
+                  <DropdownMenu aria-label='Static Actions'>
+                    <DropdownItem key='profile'>
+                      <Link href='/user/profile'>Profile</Link>
+                    </DropdownItem>
+                    <DropdownItem
+                      key='logout'
+                      className='text-danger'
+                      color='danger'
+                      onClick={() => signOut()}
+                    >
+                      <Link href='/'>Logout</Link>
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </div>
             ) : (
               <Button as={Link} color='primary' href='/signup' variant='faded'>
                 Sign Up
