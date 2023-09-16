@@ -1,4 +1,12 @@
 import { useState, useEffect } from 'react'
+import {
+  // Link,
+  Dropdown,
+  DropdownTrigger,
+  DropdownMenu,
+  DropdownSection,
+  DropdownItem,
+} from '@nextui-org/react'
 
 const Notifications = () => {
   const [notifications, setNotifications] = useState([])
@@ -16,7 +24,7 @@ const Notifications = () => {
       const data = JSON.parse(event.data)
       console.log(data, 'data')
 
-      setNotifications(prevNotifications => [...prevNotifications, ...data]);
+      setNotifications(prevNotifications => [...prevNotifications, ...data])
       console.log(notifications)
     })
   }, [])
@@ -24,9 +32,18 @@ const Notifications = () => {
   console.log(notifications)
   if (notifications.length > 0)
     return (
-      <>
-        <p className='mr-1'>🔔({notifications.length})</p>
-      </>
+      <Dropdown>
+        <DropdownTrigger>
+          <p className='mr-1'>🔔({notifications.length})</p>
+        </DropdownTrigger>
+        <DropdownMenu aria-label='Static Actions'>
+        {notifications.map(notification =>
+          <DropdownItem key={notification.id}>
+            <p>{notification.message}</p>
+          </DropdownItem>
+        )}
+        </DropdownMenu>
+      </Dropdown>
     )
   else
     return null
