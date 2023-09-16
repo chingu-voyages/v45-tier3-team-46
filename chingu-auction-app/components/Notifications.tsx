@@ -12,20 +12,24 @@ const Notifications = () => {
     }
 
     source.addEventListener('update', (event) => {
-      console.log('event listener')
+      console.log(source, 'event listener')
       const data = JSON.parse(event.data)
       console.log(data, 'data')
-      setNotifications(prevNotifications => [...prevNotifications, data])
+
+      setNotifications(prevNotifications => [...prevNotifications, ...data]);
       console.log(notifications)
     })
   }, [])
 
-
-  return (
-    <>
-      <p className='mr-1'>🔔({notifications.length})</p>
-    </>
-  )
+  console.log(notifications)
+  if (notifications.length > 0)
+    return (
+      <>
+        <p className='mr-1'>🔔({notifications.length})</p>
+      </>
+    )
+  else
+    return null
 }
 
 export default Notifications
