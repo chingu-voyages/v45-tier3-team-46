@@ -2,9 +2,12 @@ import { notFound } from 'next/navigation'
 import AuctionDetailsCard from '@/components/AuctionDetailsCard'
 
 async function getData(id) {
-  const res = await fetch(`http://localhost:3000/api/auctions/${Number(id)}`, {
-    cache: 'no-store',
-  })
+  const res = await fetch(
+    ` https://chingu-auction.vercel.app/api/auctions/${Number(id)}`,
+    {
+      cache: 'no-store',
+    }
+  )
 
   if (!res.ok) {
     return notFound()
