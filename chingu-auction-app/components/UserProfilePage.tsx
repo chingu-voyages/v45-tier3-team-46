@@ -1,15 +1,12 @@
 'use client'
 import { useSession } from 'next-auth/react'
 import { Tabs, Tab } from '@nextui-org/tabs'
-import { getServerSession } from "next-auth"
-import { options } from '../app//api/auth/[...nextauth]/options'
 import { Card, CardBody, CardFooter } from '@nextui-org/card'
 import { Image } from '@nextui-org/image'
 import { Input } from '@nextui-org/input'
 import { useEffect, useState } from 'react'
 import { Item } from '../app/utils/types'
 import { useParams } from 'next/navigation'
-import { Link } from '@nextui-org/link'
 import { useRouter } from 'next/navigation'
 
 
@@ -24,14 +21,14 @@ function ItemCard(props: any) {
           radius='lg'
           width='100%'
           height='100%'
-          alt={props.title}
+          alt={props?.title}
           className='w-full object-cover h-48'
-          src={props.img}
+          src={props?.img}
         />
       </CardBody>
       <CardFooter className='text-small justify-between'>
-        <b>{props.title}</b>
-        <p className='text-default-500'>{props.price}</p>
+        <b>{props?.title}</b>
+        <p className='text-default-500'>{props?.price}</p>
       </CardFooter>
     </Card>
   )
@@ -42,7 +39,6 @@ export function UserProfilePage(props: any) {
   const { userId } = useParams()
   const [items, setItems] = useState([])
   const tab_card_style = "grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3"
-
 
   useEffect(() => {
     const fetch_data = async () => {
@@ -60,10 +56,9 @@ export function UserProfilePage(props: any) {
   const items_on_sale = items.filter((item: Item) => item.sellerId)
 
   return (
-
-    <div className="flex w-11/12 flex-col items-center mx-auto mt-2">
-      <Tabs aria-label="options">
-        <Tab key="details" title="Details">
+    <div className='flex w-11/12 flex-col items-center mx-auto mt-2'>
+      <Tabs aria-label='options'>
+        <Tab key='details' title='Details'>
           <Card>
             <CardBody>
               <Input
@@ -141,6 +136,6 @@ export function UserProfilePage(props: any) {
           </div>}
         </Tab>
       </Tabs>
-    </div>
+    </div >
   )
 }

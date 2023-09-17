@@ -45,7 +45,7 @@ export default function AuctionDetailsCard({ data }) {
           <Image
             width={600}
             alt={`${data.title} card`}
-            src={data.pictures[0].url}
+            src={data?.pictures[0]?.url}
             className='p-5 rounded'
           />
         </div>
