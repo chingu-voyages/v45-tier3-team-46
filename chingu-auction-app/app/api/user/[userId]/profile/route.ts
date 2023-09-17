@@ -1,11 +1,20 @@
 import { PrismaClient } from "@prisma/client"
 import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { options } from '../../../auth/[...nextauth]/options'
 
 const prisma = new PrismaClient();
 
 export async function GET(req: Request, { params }: any) {
 
   const { userId } = params
+
+  const session = await getServerSession(options)
+  const { user } = session
+
+  if (user.id !== userId)
+    return
+
 
   try {
 
