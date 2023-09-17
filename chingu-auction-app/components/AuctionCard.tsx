@@ -44,7 +44,7 @@ export function AuctionCard({ listing }: any) {
           <Image
             alt='Card background'
             className='object-cover rounded-xl cursor-pointer'
-            src={listing?.pictures[0].url}
+            src={listing?.pictures[0]?.url}
             width={270}
           />
         </Link>
