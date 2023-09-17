@@ -18,8 +18,8 @@ export async function GET(req: Request, { params }: any) {
 
   try {
 
-    const get_user = await prisma.item.findMany({
-      // where: { id: Number(userId) },
+    const get_user = await prisma.item.findUnique({
+      where: { id: Number(userId) },
       include: { pictures: true },
     })
 
