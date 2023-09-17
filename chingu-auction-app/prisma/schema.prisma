@@ -85,6 +85,7 @@ model Notification {
   userId          Int
   createdAt       DateTime        @default(now())
   isNew           Boolean         @default(true)
+  read           Boolean         @default(false)
 
   @@index([itemId])
   @@index([userId])
