@@ -32,7 +32,14 @@ function classNames(...classes) {
 const Nav = (props: any) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   console.log(props.session, 'nav session log')
-  const menuItems = ['Profile', 'Auctions', 'About', 'Contact', 'Logout']
+  const menuItems = [
+    'Profile',
+    'Add Item',
+    'Auctions',
+    'About',
+    'Contact',
+    'Logout',
+  ]
 
   return (
     <div>
@@ -144,9 +151,11 @@ const Nav = (props: any) => {
                 }
                 href={
                   item === 'Profile'
-                    ? '/user/profile'
+                    ? '/user/${id}/profile'
                     : item === 'Logout'
                     ? '/'
+                    : item === 'Add Item'
+                    ? '/addauction'
                     : `/${item}`.toLowerCase()
                 }
                 size='lg'
