@@ -114,9 +114,9 @@ export function UserProfilePage(props: any) {
                 return (
                   <ItemCard
                     key={index}
-                    title={item.title}
-                    price={item.buyNowPrice}
-                    img={item.pictures[0].url}
+                    title={item?.title}
+                    price={item?.buyNowPrice}
+                    img={item?.pictures[0]?.url}
                   />
                 )
               })}
@@ -132,9 +132,9 @@ export function UserProfilePage(props: any) {
                 return (
                   <ItemCard
                     key={index}
-                    title={item.title}
-                    price={item.buyNowPrice}
-                    img={item.pictures[0].url}
+                    title={item?.title}
+                    price={item?.buyNowPrice}
+                    img={item?.pictures[0]?.url}
                   />
                 )
               })}
@@ -150,9 +150,9 @@ export function UserProfilePage(props: any) {
                 return (
                   <ItemCard
                     key={index}
-                    title={item.title}
-                    price={item.buyNowPrice}
-                    img={item.pictures[0].url}
+                    title={item?.title}
+                    price={item?.buyNowPrice}
+                    img={item?.pictures[0]?.url}
                   />
                 )
               })}
