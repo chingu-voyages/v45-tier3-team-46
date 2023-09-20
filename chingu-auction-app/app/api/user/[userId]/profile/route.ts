@@ -7,23 +7,27 @@ const prisma = new PrismaClient();
 
 export async function GET(req: Request, { params }: any) {
 
-  const { userId } = params
+  const { userId }: { userId: number } = params
 
   const session = await getServerSession(options)
-  const { user } = session
 
-  if (user.id !== userId)
+  if (session?.user?.id !== Number(userId)) {
     return
-
+  }
 
   try {
 
-    const get_user = await prisma.item.findUnique({
+    const get_item = await prisma.user.findUnique({
       where: { id: Number(userId) },
-      include: { pictures: true },
+      include:
+
+      {
+        itemsForSale: true,
+        itemsPurchased: true
+      },
     })
 
-    return NextResponse.json(get_user, { status: 200 })
+    return NextResponse.json(get_item, { status: 200 })
   } catch (error) {
     console.log(error)
     return NextResponse.json({
