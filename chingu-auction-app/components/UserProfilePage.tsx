@@ -5,7 +5,7 @@ import { Card, CardBody, CardFooter } from '@nextui-org/card'
 import { Image } from '@nextui-org/image'
 import { Input } from '@nextui-org/input'
 import { useEffect, useState } from 'react'
-import { Item } from '../app/utils/types'
+import { Item, User } from '../app/utils/types'
 import { useParams } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 
@@ -34,26 +34,26 @@ function ItemCard(props: any) {
   )
 }
 
-export function UserProfilePage(props: any) {
+export function UserProfilePage() {
   const { data: session } = useSession()
   const { userId } = useParams()
-  const [items, setItems] = useState([])
+  const [user, setUser] = useState([])
   const tab_card_style = "grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 gap-3"
 
   useEffect(() => {
     const fetch_data = async () => {
       const data = await fetch(`/api/user/${userId}/profile`)
-      const items = await data.json()
-      return items
+      const user = await data.json()
+      console.log(user, "hee")
+      setUser(user)
     }
 
-    const returned_items = fetch_data()
-    returned_items.then((values) => setItems(values))
+    fetch_data()
   }, [])
 
-  const items_purchased = items.filter((item: Item) => item.purchasedById)
-  const items_sold = items.filter((item: Item) => item.sold)
-  const items_on_sale = items.filter((item: Item) => item.sellerId)
+  const items_purchased = user?.itemsPurchased?.filter((item: Item) => item.purchasedById)
+  const items_sold = user?.itemsForSale?.filter((item: Item) => item.sold)
+  const items_on_sale = user?.itemsForSale?.filter((item: Item) => item.sellerId)
 
   return (
     <div className='flex w-11/12 flex-col items-center mx-auto mt-2'>
@@ -108,29 +108,28 @@ export function UserProfilePage(props: any) {
         </Tab>
         <Tab key="items-for-sale" title="Items for Sale" >
 
-          {items.length === 0 ? "No Items For Sale" : <div className={`${tab_card_style}`}>
-            {items_on_sale.map((item: Item, index) => {
+          {items_on_sale === undefined ? "Loading" : items_on_sale?.length === 0 ? "No Items For Sale" : <div className={`${tab_card_style}`}>
+            {items_on_sale.map((item: Item, index: number) => {
               return (
-                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
-              )
+                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures === undefined ? "No Picture Avaliable" : item.pictures[0]?.url} />)
             })}
           </div>}
         </Tab>
         <Tab key="items-sold" title="Items Sold" >
-          {items.length === 0 ? "No Items Sold" : <div className={`${tab_card_style}`}>
-            {items_sold.map((item: Item, index) => {
+          {items_sold === undefined ? "Loading" : items_sold?.length === 0 ? "No Items Sold" : <div className={`${tab_card_style}`}>
+            {items_sold.map((item: Item, index: number) => {
               return (
-                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
+                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures === undefined ? "No Picture Avaliable" : item.pictures[0]?.url} />
               )
             })}
           </div>}
 
         </Tab>
         <Tab key="items-purchased" title="Items Purchased" >
-          {items.length === 0 ? "No Items Purchased" : <div className={`${tab_card_style}`}>
-            {items_purchased.map((item: Item, index) => {
+          {items_purchased === undefined ? "Loading" : items_purchased?.length === 0 ? "No Items Purchased" : <div className={`${tab_card_style}`}>
+            {items_purchased.map((item: Item, index: number) => {
               return (
-                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures[0].url} />
+                <ItemCard key={index} id={item.id} title={item.title} price={item.buyNowPrice} img={item.pictures === undefined ? "No Picture Avaliable" : item.pictures[0]?.url} />
               )
             })}
           </div>}
