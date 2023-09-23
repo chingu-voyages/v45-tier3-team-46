@@ -36,7 +36,7 @@ model Item {
   bidders         User[]
   bids            Bid[]
   auctionEnded    Boolean         @default(false)
-  soldPrice       Decimal?        @db.Decimal(10,2) 
+  // soldPrice       Decimal?        @db.Decimal(10,2) // query for this instead
   notifications   Notification[]
 
   @@index([sellerId])
@@ -85,7 +85,7 @@ model Notification {
   userId          Int
   createdAt       DateTime        @default(now())
   isNew           Boolean         @default(true)
-  read           Boolean         @default(false)
+  read           Boolean          @default(false)
 
   @@index([itemId])
   @@index([userId])
