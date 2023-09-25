@@ -22,8 +22,16 @@ export async function GET(req: Request, { params }: any) {
       include:
 
       {
-        itemsForSale: true,
-        itemsPurchased: true
+        itemsForSale: {
+          include: {
+            pictures: true
+          }
+        },
+        itemsPurchased: {
+          include: {
+            pictures: true
+          }
+        }
       },
     })
 
