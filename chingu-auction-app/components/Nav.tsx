@@ -30,10 +30,17 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
 }
 
-const Nav = (props) => {
+const Nav = (props: any) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   console.log(props.session, 'nav session log')
-  const menuItems = ['Profile', 'Auctions', 'About', 'Contact', 'Logout']
+  const menuItems = [
+    'Profile',
+    'Add Item',
+    'Auctions',
+    'About',
+    'Contact',
+    'Logout',
+  ]
 
   return (
     <div>
@@ -78,7 +85,10 @@ const Nav = (props) => {
           </NavbarItem>
           {props.session ? (
             <NavbarItem>
-              <Link color='foreground' href={`/user/${props.session.user.id}/profile`}>
+              <Link
+                color='foreground'
+                href={`/user/${props.session.user.id}/profile`}
+              >
                 Profile
               </Link>
             </NavbarItem>
@@ -108,7 +118,9 @@ const Nav = (props) => {
                   </DropdownTrigger>
                   <DropdownMenu aria-label='Static Actions'>
                     <DropdownItem key='profile'>
-                      <Link href='/user/profile'>Profile</Link>
+                      <Link href={`/user/${props.session.user.id}/profile`}>
+                      Profile
+                    </Link>
                     </DropdownItem>
                     <DropdownItem
                       key='logout'
@@ -138,15 +150,17 @@ const Nav = (props) => {
                   index === 1
                     ? 'warning'
                     : index === menuItems.length - 1
-                      ? 'danger'
-                      : 'foreground'
+                    ? 'danger'
+                    : 'foreground'
                 }
                 href={
                   item === 'Profile'
-                    ? '/user/profile'
+                    ? '/user/${id}/profile'
                     : item === 'Logout'
-                      ? '/'
-                      : `/${item}`.toLowerCase()
+                    ? '/'
+                    : item === 'Add Item'
+                    ? '/addauction'
+                    : `/${item}`.toLowerCase()
                 }
                 size='lg'
               >

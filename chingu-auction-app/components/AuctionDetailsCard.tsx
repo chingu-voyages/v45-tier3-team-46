@@ -15,6 +15,7 @@ import { useState } from 'react'
 
 export default function AuctionDetailsCard({ data }) {
   console.log({ data })
+
   const [bidAmount, setBidAmount] = useState([])
 
   async function placeBid() {
@@ -44,7 +45,7 @@ export default function AuctionDetailsCard({ data }) {
           <Image
             width={600}
             alt={`${data.title} card`}
-            src={data.pictures[0].url}
+            src={data?.pictures[0]?.url}
             className='p-5 rounded'
           />
         </div>
@@ -80,8 +81,8 @@ export default function AuctionDetailsCard({ data }) {
           </Card>
         </div>
       </div>
-      <div className='grid grid-cols-1 md:grid-cols-5 m-10 gap-8'>
-        <div className='sm:col-start-2 col-span-3'>
+      <div className='grid grid-cols-3 md:grid-cols-5 m-10 gap-8'>
+        <div className='md:col-start-2 col-span-3'>
           <Card className='max-w-[600px]'>
             <CardHeader className='flex gap-3'>
               <div>

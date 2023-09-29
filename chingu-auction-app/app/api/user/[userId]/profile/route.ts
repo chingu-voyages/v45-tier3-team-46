@@ -1,20 +1,41 @@
 import { PrismaClient } from "@prisma/client"
 import { NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { options } from '../../../auth/[...nextauth]/options'
 
 const prisma = new PrismaClient();
 
 export async function GET(req: Request, { params }: any) {
 
-  const { userId } = params
+  const { userId }: { userId: number } = params
+
+  const session = await getServerSession(options)
+
+  if (session?.user?.id !== Number(userId)) {
+    return
+  }
 
   try {
 
-    const get_user = await prisma.item.findMany({
-      // where: { id: Number(userId) },
-      include: { pictures: true },
+    const get_item = await prisma.user.findUnique({
+      where: { id: Number(userId) },
+      include:
+
+      {
+        itemsForSale: {
+          include: {
+            pictures: true
+          }
+        },
+        itemsPurchased: {
+          include: {
+            pictures: true
+          }
+        }
+      },
     })
 
-    return NextResponse.json(get_user, { status: 200 })
+    return NextResponse.json(get_item, { status: 200 })
   } catch (error) {
     console.log(error)
     return NextResponse.json({
