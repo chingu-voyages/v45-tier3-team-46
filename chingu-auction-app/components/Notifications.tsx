@@ -7,9 +7,14 @@ import {
   DropdownSection,
   DropdownItem,
 } from '@nextui-org/react'
+import { useAppDispatch, useAppSelector } from "../app/hooks"
+import { addNotifications } from "../app/store/notificationsReducer"
+
+
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState([])
+  const notifications = useAppSelector((state) => state.notifications.notifications)
+  const dispatch = useAppDispatch()
 
   useEffect(() => {
     const source = new EventSource('/api/notifications')
@@ -24,9 +29,14 @@ const Notifications = () => {
       const data = JSON.parse(event.data)
       console.log(data, 'data')
 
-      setNotifications(prevNotifications => [...prevNotifications, ...data])
+      dispatch(addNotifications(data))
       console.log(notifications)
     })
+
+    return () => {
+      source.close()
+    }
+
   }, [])
 
   console.log(notifications)

@@ -25,6 +25,7 @@ import {
   DropdownSection,
   DropdownItem,
 } from '@nextui-org/react'
+import { useSession } from 'next-auth/react'
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -32,7 +33,8 @@ function classNames(...classes) {
 
 const Nav = (props: any) => {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  console.log(props.session, 'nav session log')
+  const { data: session } = useSession()
+  console.log(session, 'nav session log')
   const menuItems = [
     'Profile',
     'Add Item',
@@ -83,18 +85,18 @@ const Nav = (props: any) => {
               Contact
             </Link>
           </NavbarItem>
-          {props.session ? (
+          {session ? (
             <NavbarItem>
               <Link
                 color='foreground'
-                href={`/user/${props.session.user.id}/profile`}
+                href={`/user/${session?.user?.id}/profile`}
               >
                 Profile
               </Link>
             </NavbarItem>
           ) : null}
 
-          {props.session ? (
+          {session ? (
             <NavbarItem>
               <Link color='foreground' href='/addauction'>
                 Add Item
@@ -103,13 +105,13 @@ const Nav = (props: any) => {
           ) : null}
         </NavbarContent>
         <NavbarContent justify='end'>
-          <NavbarItem className={props.session ? 'hidden' : 'lg:flex'}>
+          <NavbarItem className={session ? 'hidden' : 'lg:flex'}>
             <Link href='/login' color='foreground'>
               Log In
             </Link>
           </NavbarItem>
           <NavbarItem>
-            {props.session ? (
+            {session ? (
               <div className='flex items-center'>
                 <Notifications />
                 <Dropdown>
@@ -118,7 +120,7 @@ const Nav = (props: any) => {
                   </DropdownTrigger>
                   <DropdownMenu aria-label='Static Actions'>
                     <DropdownItem key='profile'>
-                      <Link href={`/user/${props.session.user.id}/profile`}>
+                      <Link href={`/user/${session?.user?.id}/profile`}>
                       Profile
                     </Link>
                     </DropdownItem>
